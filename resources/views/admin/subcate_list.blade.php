@@ -38,10 +38,10 @@
                               {{-- <th> Part Type Arabic </th> --}}
                               <th> Part English</th>
                               <th> Part Arabic</th>
-                              <th> Part Type French </th>
-                              <th> Part Type Russian </th>
-                              <th> Part Type Dari </th>
-                              <th> Part Type Urdu </th>
+                              <th> Part French </th>
+                              <th> Part Russian </th>
+                              <th> Part Dari </th>
+                              <th> Part Urdu </th>
                               <th> Status</th>
                               <th> Action</th>
                             </tr>

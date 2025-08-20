@@ -35,13 +35,13 @@
                               <td><input type="checkbox" id="selectAll"></td>
                               <th> Sr no </th>
                               <th> Make Name </th>
-                              <th> Make Arabic </th>
-                              <th> Make French</th>
-                              <th> Make Russian</th>
-                              <th> Make Dari</th>
-                              <th> Make Urdu</th>
+                              {{-- <th> Make Arabic </th> --}}
                               <th> Model Name </th>
                               <th> Model Name Arabic</th>
+                              <th> Model Name French</th>
+                              <th> Model Name Russian</th>
+                              <th> Model Name Dari</th>
+                              <th> Model Name Urdu</th>
                               <th> Status</th>
                               <th> Action</th>
                             </tr>
@@ -55,13 +55,13 @@
                               <td><input type="checkbox" name="ids[]" value="{{ $list->id }}" class="selectBox"></td>
                               <td>{{$i}}</td>
                               <td> {{$list->brand_name}} </td>
-                              <td> {{$list->ar_brand_name}} </td>
+                              {{-- <td> {{$list->ar_brand_name}} </td> --}}
+                              <td> {{$list->model_name}} </td>
+                              <td> {{$list->ar_model_name}} </td>
                               <td> {{$list->fr_model_name}} </td>
                               <td> {{$list->ru_model_name}} </td>
                               <td> {{$list->fa_model_name}} </td>
                               <td> {{$list->ur_model_name}} </td>
-                              <td> {{$list->model_name}} </td>
-                              <td> {{$list->ar_model_name}} </td>
                               <td><select class="user_status form-select form-select-sm" user="{{$list->id}}">
                                   <option value="0" {{$list->is_active==0?'selected':''}}>Inactive</option>
                                   <option value="1" {{$list->is_active==1?'selected':''}}>Active</option>
