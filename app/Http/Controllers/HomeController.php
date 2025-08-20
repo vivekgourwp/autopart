@@ -25,7 +25,7 @@ class HomeController extends Controller
         $brands=DB::table('brand')->where('is_active',1)->where('is_deleted',0)->get();
         $brand = $brands->map(function ($item) use ($locale) {
             $item->brand_name = $locale == 'ar' ? $item->ar_brand_name : $item->brand_name;
-            $item->brand_name = $locale == 'fr' ? $item->fa_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'fr' ? $item->fr_brand_name : $item->brand_name;
             $item->brand_name = $locale == 'ru' ? $item->ru_brand_name : $item->brand_name;
             $item->brand_name = $locale == 'fa' ? $item->fa_brand_name : $item->brand_name;
             $item->brand_name = $locale == 'ur' ? $item->ur_brand_name : $item->brand_name;
@@ -35,6 +35,10 @@ class HomeController extends Controller
         $categorys=DB::table('category')->where('is_active',1)->where('is_deleted',0)->get();
         $category = $categorys->map(function ($item) use ($locale) {
             $item->category_name = $locale == 'ar' ? $item->ar_category_name : $item->category_name;
+            $item->category_name = $locale == 'fr' ? $item->fr_category_name : $item->category_name;
+            $item->category_name = $locale == 'ru' ? $item->ru_category_name : $item->category_name;
+            $item->category_name = $locale == 'fa' ? $item->fa_category_name : $item->category_name;
+            $item->category_name = $locale == 'ur' ? $item->ur_category_name : $item->category_name;
             return $item;
         });
 
@@ -889,14 +893,30 @@ class HomeController extends Controller
         $brands=DB::table('brand')->where('is_active',1)->where('is_deleted',0)->get();
         $brand = $brands->map(function ($item) use ($locale) {
             $item->brand_name = $locale == 'ar' ? $item->ar_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'fr' ? $item->fr_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'ru' ? $item->ru_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'fa' ? $item->fa_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'ur' ? $item->ur_brand_name : $item->brand_name;
             return $item;
         });
 
         $categorys=DB::table('category')->where('is_active',1)->where('is_deleted',0)->get();
         $category = $categorys->map(function ($item) use ($locale) {
             $item->category_name = $locale == 'ar' ? $item->ar_category_name : $item->category_name;
+            $item->category_name = $locale == 'fr' ? $item->fr_category_name : $item->category_name;
+            $item->category_name = $locale == 'ru' ? $item->ru_category_name : $item->category_name;
+            $item->category_name = $locale == 'fa' ? $item->fa_category_name : $item->category_name;
+            $item->category_name = $locale == 'ur' ? $item->ur_category_name : $item->category_name;
             return $item;
         });
+
+
+
+
+
+
+
+
 
         $models = DB::table('make_model')
                 ->where('is_active', 1)
@@ -905,6 +925,10 @@ class HomeController extends Controller
                 ->get();
         $model = $models->map(function ($item) use ($locale) {
             $item->model_name = $locale == 'ar' ? $item->ar_model_name : $item->model_name;
+            $item->model_name = $locale == 'fr' ? $item->fr_model_name : $item->model_name;
+            $item->model_name = $locale == 'ru' ? $item->ru_model_name : $item->model_name;
+            $item->model_name = $locale == 'fa' ? $item->fa_model_name : $item->model_name;
+            $item->model_name = $locale == 'ur' ? $item->ur_model_name : $item->model_name;
             return $item;
         });
 
@@ -915,6 +939,10 @@ class HomeController extends Controller
                 ->get();
         $subcategory = $subcategorys->map(function ($item) use ($locale) {
             $item->subcat_name = $locale == 'ar' ? $item->ar_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'fr' ? $item->fr_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'ru' ? $item->ru_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'fa' ? $item->fa_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'ur' ? $item->ur_subcat_name : $item->subcat_name;
             return $item;
         });
 
