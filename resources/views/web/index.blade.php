@@ -19,7 +19,7 @@
 <section class="hero-section text-center">
     <h1 class="filetrs-text-add">{{ __('messages.head_note1') }}</br>{{ __('messages.head_note2') }}</h1>
     <form class="search-bar d-flex flex-wrap justify-content-center gap-2 mt-4" method="get" action="{{route('productList')}}">
-        
+
         <div class="access-auto-parts">
             <div class="filter-box">
                 <input type="hidden" name="user_latitude" id="user_latitude">
@@ -43,7 +43,7 @@
                     </select>
                     <select class="select2" id="model" name="model_id">
                     <option value="">{{ __('messages.MODEL') }}</option>
-                    
+
                     </select>
                 </div>
                 <div class="dropdown-row two">
@@ -90,7 +90,7 @@
     </div>
 
 
- 
+
     </form>
 </section>
 
@@ -195,7 +195,7 @@
             });
         });
     });
-    
+
 </script>
 <script>
     $('#user_location').click(function(){

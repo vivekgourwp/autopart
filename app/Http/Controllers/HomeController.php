@@ -25,6 +25,10 @@ class HomeController extends Controller
         $brands=DB::table('brand')->where('is_active',1)->where('is_deleted',0)->get();
         $brand = $brands->map(function ($item) use ($locale) {
             $item->brand_name = $locale == 'ar' ? $item->ar_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'fr' ? $item->fa_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'ru' ? $item->ru_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'fa' ? $item->fa_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'ur' ? $item->ur_brand_name : $item->brand_name;
             return $item;
         });
 
@@ -36,7 +40,7 @@ class HomeController extends Controller
 
         $make_year=DB::table('make_year')->where('is_active',1)->where('is_deleted',0)->orderby('id','desc')->get();
         $country=DB::table('master_country')->where('country_status',1)->get();
-        
+
         $citys=DB::table('master_city')->join('master_country','master_country.country_id','=','master_city.country_id')->where('master_country.country_status',1)->where('master_city.city_status',1)->get();
         $city = $citys->map(function ($item) use ($locale) {
             $item->city_name = $locale == 'ar' ? $item->city_name_ar : $item->city_name;
@@ -203,7 +207,7 @@ class HomeController extends Controller
         // STEP 6: Final result
         $products = $productQuery->distinct()->paginate(9);
         //echo "<pre>";print_r($products);die();
-        
+
         return view('web.listing', compact('products', 'brand', 'category', 'models', 'subcategory', 'generation', 'make_year', 'country'));
     }
 
@@ -212,7 +216,7 @@ class HomeController extends Controller
 
     public function productList(Request $request)
     {
-        
+
         $locale = App::getLocale();
         $brands=DB::table('brand')->where('is_active',1)->where('is_deleted',0)->get();
         $brand = $brands->map(function ($item) use ($locale) {
@@ -228,7 +232,7 @@ class HomeController extends Controller
 
         $make_year=DB::table('make_year')->where('is_active',1)->where('is_deleted',0)->orderby('id','desc')->get();
         $country=DB::table('master_country')->get();
-        
+
         $cityalls=DB::table('master_city')->join('master_country','master_country.country_id','=','master_city.country_id')->where('master_country.country_status',1)->where('master_city.city_status',1)->get();
         $cityall = $cityalls->map(function ($item) use ($locale) {
             $item->city_name = $locale == 'ar' ? $item->city_name_ar : $item->city_name;
@@ -248,7 +252,7 @@ class HomeController extends Controller
         $generation = DB::table('generation_year')
                 ->where('is_deleted', 0)
                 ->when($request->model_id, fn($q) => $q->where('model_id', $request->model_id))
-                ->get();        
+                ->get();
 
         $subcategorys = DB::table('subcategory')
                 ->where('is_active', 1)
@@ -278,8 +282,8 @@ class HomeController extends Controller
         } elseif ($request->user_latitude && $request->user_longitude) {
             $buyerLat = $request->user_latitude;
             $buyerLng = $request->user_longitude;
-        }    
-        
+        }
+
         // STEP 0: Parse year
         $filterYear = $request->year;
 
@@ -341,7 +345,7 @@ class HomeController extends Controller
                 'subcategory.subcat_name as subcategory_name',
                 'product.is_active', 'product.product_type', 'product.product_price', 'product.seller_id','product.product_note',
                 'users.first_name', 'users.last_name','shop_detail.shop_name','shop_detail.shop_logo',
-                'master_city.city_name', 'master_country.country_name', 
+                'master_city.city_name', 'master_country.country_name',
                 'generation_year.start_year', 'generation_year.end_year', 'users.mobile','part_type.part_type_label','product.admin_product_id'
             );
         if ($buyerLat && $buyerLng) {
@@ -394,7 +398,7 @@ class HomeController extends Controller
 
             $products = $productQuery->distinct()->inRandomOrder()->paginate(9);
         }
-    
+
         // STEP 5: Fallback to direct product table if nothing found
         if (empty($products) || $products->isEmpty()) {
             $fallbackQuery = clone $productQuery;
@@ -538,12 +542,12 @@ class HomeController extends Controller
                             )
                         ->first();
         $shop  = DB::table('shop_detail')->where('user_id', '=' , $product->seller_id)->first();
-        
+
         $service = DB::table('seller_service')
                         ->where('seller_id', $product->seller_id)
                         ->join('services','services.id','=','seller_service.service_id')->get();
 
-        /*                
+        /*
         // Now fetch the group_id from interchange_product for this product combination
         $group = DB::table('interchange_product')
                     ->where('brand_id', $product->brand_id)
@@ -562,7 +566,7 @@ class HomeController extends Controller
                 ->where('group_id', $group)
                 ->get();
 
-            if ($combinations->isNotEmpty()) 
+            if ($combinations->isNotEmpty())
             {
                 $similarProducts = DB::table('product as p')
                     ->leftJoin('brand as b', 'b.id', '=', 'p.brand_id')
@@ -612,7 +616,7 @@ class HomeController extends Controller
         }
 
         //Fallback: If no group or similar found, use loose match
-        if ($similarProducts->isEmpty()) 
+        if ($similarProducts->isEmpty())
         {
             $similarProducts = DB::table('product as p')
                 ->leftJoin('brand as b', 'b.id', '=', 'p.brand_id')
@@ -666,11 +670,11 @@ class HomeController extends Controller
                 ->where('is_deleted', 0)
                 ->when($request->brand_id, fn($q) => $q->where('brand_id', $request->brand_id))
                 ->get();
-        
+
         $generation = DB::table('generation_year')
                 ->where('is_deleted', 0)
                 ->when($request->model_id, fn($q) => $q->where('model_id', $request->model_id))
-                ->get();        
+                ->get();
 
         $subcategory = DB::table('subcategory')
                 ->where('is_active', 1)
@@ -712,7 +716,7 @@ class HomeController extends Controller
              $query->where('product.product_type', $request->sort);
         }
         $query->distinct('product.id');
-        
+
         // Important: select necessary columns only, avoid ambiguous column names
         $query->select(
                     'product.id','product_img.product_image',
@@ -728,7 +732,7 @@ class HomeController extends Controller
 
         if ($request->ajax()) {
             return view('web.partial_product_list', compact('products'))->render();
-        }        
+        }
         return view('web.listing',compact('products','brand','category','models','subcategory','generation'));
     }
     public function shopDetail(Request $request,$city, $shop)
@@ -745,7 +749,7 @@ class HomeController extends Controller
                         ->first();
         if(!$detail)
         {
-             return redirect()->back()->with('error', 'Shop not found.'); 
+             return redirect()->back()->with('error', 'Shop not found.');
         }
         $id=$detail->id;
 
@@ -803,8 +807,8 @@ class HomeController extends Controller
         $service = DB::table('seller_service')
                         ->where('seller_id', $id)
                         ->join('services','services.id','=','seller_service.service_id')->get();
-        $shop_url = url('/shop/').'/'.$user->city_name.'/'. $shop->shop_name;     
-                               
+        $shop_url = url('/shop/').'/'.$user->city_name.'/'. $shop->shop_name;
+
         // $query = Product::query()
         //                 ->leftJoin('brand', 'brand.id', '=', 'product.brand_id')
         //                 ->leftJoin('make_model', 'make_model.id', '=', 'product.model_id')
@@ -816,9 +820,9 @@ class HomeController extends Controller
         //                 ->where('product.is_deleted', 0)
         //                 ->where('product.is_active', 1);
 
-        
+
         // $query->distinct('product.id');
-        
+
         // // Important: select necessary columns only, avoid ambiguous column names
         // $query->select(
         //             'product.id','product_img.product_image',
@@ -846,7 +850,7 @@ class HomeController extends Controller
                         ->first();
         $shop  = DB::table('shop_detail')->where('user_id', '=' , $id)->first();
 
-        $qrFile = public_path('uploads/qr_code/' . $shop->qr_code); 
+        $qrFile = public_path('uploads/qr_code/' . $shop->qr_code);
         $qrBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($qrFile));
 
         $html = view('admin.seller_card', [
@@ -854,7 +858,7 @@ class HomeController extends Controller
             'user'  => $user,
             'qrPath' => $qrBase64,
         ])->render();
-        
+
         $fileName = 'card_' . $shop->id . '_' . Str::random(8) . '.png';
         $destinationPath = public_path('uploads/business_card');
 
@@ -945,7 +949,7 @@ class HomeController extends Controller
                         ->where('product.is_deleted', 0)
                         ->where('product.is_active', 1);
 
-        
+
         //$query->distinct('product.id');
         if ($request->brand_id) {
             $query->where('product.brand_id', $request->brand_id);
@@ -970,19 +974,19 @@ class HomeController extends Controller
                     'product.is_active','product.product_type','product.product_price','product.seller_id','product.admin_product_id',
                     'generation_year.start_year','generation_year.end_year'
         );
-                
+
         $products = $query->inRandomOrder()->paginate(9);
         $products->appends($request->except('page'));
-        //echo "<pre>";print_r($products);die(); 
+        //echo "<pre>";print_r($products);die();
         $service = DB::table('seller_service')
                         ->where('seller_id', $id)
                         ->join('services','services.id','=','seller_service.service_id')->get();
 
         return view('web.seller_mini_page',compact('brand','model','category','subcategory','make_year','country','user','shop','products','service','city'));
     }
-    
+
     public function register(Request $request)
-    {   
+    {
         $request->validate([
             //'user_name' => 'required',
             //'password' => 'required',
@@ -1029,38 +1033,38 @@ class HomeController extends Controller
     {
         $user = User::findOrFail($userId);
         $token = Str::random(64);
-        
+
         // Save token
         $user->verification_token = $token;
         $user->save();
-    
+
         $link = route('verify.email', ['id' => $user->id, 'token' => $token]);
-    
+
         $data = ['link' => $link,'name'=>$name];
-        $blade = 'web.emails.registration_email'; 
+        $blade = 'web.emails.registration_email';
         $subject = 'Verify Your Email';
-    
+
         Mail::to($user->email)->send(new CommonMail($data, $blade, $subject));
-    
+
         return 'Verification email sent!';
     }
-    
+
     public function verifyEmail($id, $token)
     {
         $user = User::where('id', $id)
                     ->where('verification_token', $token)
                     ->first();
-    
+
         if (!$user) {
             return redirect()->route('signIn')->with('error', 'Invalid verification link.');
         }
-    
+
         // Mark as verified
         $user->email_verified_at = now();
         $user->verification_token = null;
         $user->email_verified = 1;
         $user->save();
-    
+
         return redirect()->route('signIn')->with('success', 'Email verified! You can now log in.');
     }
 
@@ -1076,9 +1080,9 @@ class HomeController extends Controller
         if (Auth::attempt($credentials)) {
             Session::regenerate();
             $user = Auth::user();
-            
+
             if($user->user_status===1)
-            {   
+            {
                 if ($user->user_type === 1) {
                     return redirect()->route('user.dashboard');
                 } elseif ($user->user_type === 2) {

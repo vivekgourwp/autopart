@@ -516,6 +516,10 @@ class MasterController extends Controller
                 $policy_type        = $request->policy_type;
                 $policy_content     = $request->policy_content;
                 $policy_content_ar  = $request->policy_content_ar;
+                $policy_content_fr  = $request->policy_content_fr;
+                $policy_content_ru  = $request->policy_content_ru;
+                $policy_content_fa  = $request->policy_content_fa;
+                $policy_content_ur  = $request->policy_content_ur;
                 $policy_id          = $request->policy_id;
 
                 $policy = Policy::where('id', $policy_id)->first();
@@ -526,6 +530,10 @@ class MasterController extends Controller
                 $policy->policy_type        = $policy_type;
                 $policy->policy_content     = $policy_content;
                 $policy->policy_content_ar  = $policy_content_ar;
+                $policy->policy_content_fr  = $policy_content_fr;
+                $policy->policy_content_ru  = $policy_content_ru;
+                $policy->policy_content_fa  = $policy_content_fa;
+                $policy->policy_content_ur  = $policy_content_ur;
                 $policy->policy_name        = $request->policy_name;
                 $policy->save();
 
