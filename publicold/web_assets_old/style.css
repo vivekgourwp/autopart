@@ -1,0 +1,2055 @@
+/*nav-css*/
+
+.register-radio-btn-add .form-check {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+input#roleUser {
+    border-radius: 100px !important;
+
+    width: 20px !important;
+
+    height: 20px !important;
+
+    font-size: 15px !important;
+
+    cursor: pointer;
+
+    padding: 0px !important;
+
+    border: solid 1px #999999 !important;
+}
+
+input#roleSeller {
+    border-radius: 100px !important;
+
+    width: 20px !important;
+
+    height: 20px !important;
+
+    font-size: 15px !important;
+
+    cursor: pointer;
+
+    padding: 0px !important;
+
+    border: solid 1px #999999 !important;
+}
+
+.row.register-radio-btn-add {
+    width: 40%;
+
+    margin-top: -15px;
+
+    margin-bottom: -15px;
+}
+
+.register-radio-btn-add label.form-check-label {
+    margin-bottom: 0px !important;
+}
+
+.arab-part-top-navber-add .header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 10px 0px;
+
+    background: #fff;
+
+    gap: 5px;
+}
+
+nav.navbar.navbar-expand-lg.arab-part-top-navber-add button.login-btn img {
+    height: 23px;
+}
+
+nav.navbar.to-nav-add .nav-menu li a:hover {
+    color: #e53935;
+}
+
+.arab-part-top-navber-add .logo img {
+    height: 40px;
+}
+
+.arab-part-top-navber-add .search-box {
+    display: flex;
+
+    flex: 1;
+
+    max-width: 400px;
+
+    margin: 0 20px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    height: 45px;
+}
+
+.arab-part-top-navber-add .search-box input {
+    flex: 1;
+
+    padding: 10px;
+
+    border: none;
+
+    outline: none;
+
+    color: #1a1a1a;
+
+    font-family: "Roboto";
+
+    font-size: 15px;
+
+    box-shadow: none;
+}
+
+.arab-part-top-navber-add i.bi.bi-search {
+    color: #1a1a1a;
+}
+
+.arab-part-top-navber-add .search-box button {
+    background: none;
+
+    border: none;
+
+    padding: 0 15px;
+
+    cursor: pointer;
+}
+
+.arab-part-top-navber-add .search-box button img {
+    height: 16px;
+}
+
+.arab-part-top-navber-add .contact-info {
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+}
+
+.arab-part-top-navber-add .phone,
+.email {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.arab-part-top-navber-add .phone img,
+.email img {
+    height: 20px;
+}
+
+.arab-part-top-navber-add .language-login {
+    display: flex;
+
+    align-items: center;
+
+    gap: 0px;
+
+    padding-left: 15px;
+}
+
+.arab-part-top-navber-add .language {
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+.arab-part-top-navber-add .login-btn {
+    background-color: #e53935;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 10px;
+
+    padding: 12px 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    cursor: pointer;
+
+    font-family: "Poppins";
+
+    font-weight: 600;
+}
+
+.arab-part-top-navber-add .login-btn img {
+    height: 16px;
+}
+
+.arab-part-top-navber-add .container {
+    padding: 0;
+}
+
+nav.navbar.navbar-expand-lg.arab-part-top-navber-add {
+    background-color: #fff;
+
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 5%);
+
+    padding: 0;
+}
+
+.arab-part-top-navber-add .contact-info i {
+    background: #004858;
+
+    color: #fff;
+
+    padding: 14px 14px;
+
+    border-radius: 50px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+.arab-part-top-navber-add button.btn.btn-light.dropdown-toggle {
+    background: none;
+
+    border: none;
+
+    font-family: "Poppins";
+
+    font-weight: 500;
+
+    padding-right: 0px;
+}
+
+.arab-part-top-navber-add .contact-info small {
+    font-family: Poppins;
+
+    color: #000000;
+
+    font-weight: 400;
+}
+
+.arab-part-top-navber-add .contact-info .email-text {
+    font-family: "Poppins";
+
+    font-weight: 500;
+}
+
+.arab-part-top-navber-add .login-btn:hover {
+    background: #004858;
+}
+
+nav.navbar.to-nav-add .departments-btn {
+    background-color: #e53935;
+
+    color: white;
+
+    border: none;
+
+    padding: 10px 15px;
+
+    cursor: pointer;
+
+    border-radius: 0px;
+
+    margin-top: -8px;
+
+    height: 58px;
+
+    margin-bottom: -7px;
+
+    font-family: "Poppins";
+
+    font-weight: 600;
+
+    font-size: 15px;
+}
+
+.departments-btn i {
+    margin: 0 5px;
+}
+
+nav.navbar.to-nav-add .nav-menu {
+    list-style: none;
+
+    display: flex;
+
+    gap: 8px;
+
+    padding: 0;
+
+    margin: 0;
+}
+
+nav.navbar.to-nav-add .nav-menu li a {
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    font-family: "Poppins";
+
+    font-weight: 500;
+}
+
+.nav-menu li.dropdown a {
+    display: flex;
+
+    align-items: center;
+
+    color: #000;
+}
+
+.nav-right .upload-btn {
+    background-color: #333333;
+
+    color: white;
+
+    border: none;
+
+    padding: 10px 25px;
+
+    cursor: pointer;
+
+    border-radius: 0px;
+
+    margin-top: -8px;
+
+    height: 58px;
+
+    margin-bottom: -7px;
+
+    font-family: "Poppins";
+
+    font-weight: 600;
+
+    font-size: 15px;
+}
+
+.upload-btn i {
+    margin-right: 5px;
+}
+
+nav.navbar.to-nav-add {
+    background: #000000;
+}
+
+nav.navbar.to-nav-add button#dropdownMenuButton1 {
+    background: none;
+
+    border: none;
+
+    font-weight: 600;
+
+    font-family: "Poppins";
+
+    font-size: 16px;
+
+    padding: 0;
+}
+
+nav.navbar.to-nav-add button#dropdownMenuButton1:hover {
+    color: #e53935;
+}
+
+nav.navbar.to-nav-add ul.nav-menu.list-unstyled.d-flex.mb-0 {
+    align-items: center;
+}
+
+/*first-section-css-start*/
+/*
+.hero-section {
+    background: url(./images/Inventory-banner-img.png) no-repeat center center/cover;
+
+    height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    color: #fff;
+
+    padding: 0 15px;
+}*/
+.hero-section .hero-title {
+    font-size: 50px;
+    color: #fff;
+    font-family: "Poppins";
+    font-weight: 600;
+}
+section.hero-section.text-center.py-5 {
+    padding-bottom: 0px !important;
+    position: absolute;
+    top: 18%;
+    left: 0;
+    right: 0;
+}
+div#heroCarousel .carousel-item img {
+    height: 618px;
+    width: 100%;
+    align-items: center;
+}
+.hero-section .hero-subtext {
+    padding-top: 25px;
+    font-size: 16px;
+    margin-bottom: 30px;
+    font-family: "Poppins";
+    width: 33%;
+    margin: auto;
+    color: #fff;
+}
+div#heroCarousel .carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e");
+    width: 0px;
+}
+div#heroCarousel .carousel-control-next-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    width: 0px;
+}
+div#heroCarousel button.carousel-control-prev {
+    top: -85px;
+}
+div#heroCarousel button.carousel-control-next {
+    top: -85px;
+    right: 50px !important;
+}
+div#heroCarousel button.carousel-control-prev i.bi.bi-arrow-left {
+    color: #fff;
+    background-color: #EA3731;
+    padding: 10px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    justify-content: center;
+    font-size: 20px;
+    margin-top: 0px;
+}
+
+div#heroCarousel button.carousel-control-next i.bi.bi-arrow-right {
+    color: #fff;
+    background-color: #EA3731;
+    padding: 10px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    justify-content: center;
+    font-size: 20px;
+    margin-top: 0px;
+}
+
+
+nav.navbar.to-nav-add .container {
+    padding: 0;
+}
+
+.hero-section .search-bar {
+    background-color: #fff;
+
+    border-radius: 100px;
+
+    padding: 10px;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    max-width: 1000px;
+
+    width: 100%;
+}
+
+nav.navbar.to-nav-add .dropdown-menu.show a.dropdown-item {
+    color: #000;
+
+    font-size: 14px;
+
+    font-weight: 400;
+}
+
+.search-bar select,
+.search-bar input {
+    border: none;
+
+    padding: 10px;
+
+    border-radius: 30px;
+
+    width: 140px;
+}
+
+.search-bar input[type="text"] {
+    width: 160px;
+}
+
+.search-btn {
+    background-color: red;
+
+    color: white;
+
+    border: none;
+
+    padding: 10px 16px;
+
+    border-radius: 50%;
+}
+
+.hero-section form.search-bar {
+    max-width: max-content !important;
+    padding: 0px 25px !important;
+    align-items: center;
+    height: 100px;
+    background-color: #fff !important;
+    z-index: 9;
+    position: relative;
+    margin: auto;
+}
+
+.hero-section form.search-bar select,
+.search-bar input {
+    border: none;
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    width: 130px;
+
+    background-color: #e9e9e9;
+
+    height: 40px;
+
+    box-shadow: none;
+
+    cursor: pointer;
+
+    font-family: "Poppins";
+
+    font-size: 14px;
+
+    color: #181a20;
+}
+
+.hero-section button.filter-search-btn {
+    background-color: #ea3731;
+
+    border: none;
+
+    border-radius: 50px;
+
+    color: #fff;
+
+    display: flex;
+
+    align-items: center;
+
+    width: 65px;
+
+    height: 65px;
+
+    justify-content: center;
+
+    margin-right: -12px;
+
+    margin-left: 15px;
+}
+
+.hero-section button.filter-search-btn:hover {
+    background: #004858;
+}
+
+.hero-section input.form-control.postal-code {
+    box-shadow: none;
+}
+
+.hero-section input.form-control.postal-code:focus {
+    background: #e9e9e9;
+}
+
+/*how-it-work-css*/
+
+.row.how-it-inner {
+    width: 92%;
+
+    margin: auto;
+
+    padding-bottom: 15px;
+}
+
+.row.how-it-inner p {
+    color: #1c1c1e;
+
+    font-size: 15px;
+
+    font-family: "Poppins";
+}
+
+.row.how-it-inner img.card-img-top {
+    background: #004858;
+
+    width: 65px;
+
+    border-radius: 100px;
+
+    padding: 11px;
+
+    margin: auto;
+}
+
+.row.how-it-inner .card {
+    border-radius: 20px;
+
+    padding: 40px 0;
+}
+
+.how-it-inner h5.card-title.text-center {
+    color: #004858;
+
+    font-weight: 700;
+
+    font-family: "Poppins";
+
+    padding: 8px 0;
+
+    font-size: 22px;
+
+    margin-top: 2px;
+}
+
+.how-it-works h1.text-center.top-text {
+    font-size: 40px;
+
+    font-family: "Poppins";
+
+    color: #004858;
+
+    font-weight: 700;
+
+    padding-top: 35px;
+}
+
+.it-text-work {
+    width: 47%;
+
+    margin: auto;
+}
+
+.sellers-for-add {
+    background: #ea3731;
+    margin: 55px 0;
+    padding: 40px 0;
+}
+
+.sellers-for-add p.text-center.text-white {
+    margin-bottom: 0px;
+}
+
+.sellers-for-add h1 {
+    font-size: 40px;
+
+    font-family: "Poppins";
+
+    font-weight: 700;
+
+    padding-top: 10px;
+
+    padding-bottom: 35px;
+}
+
+.how-it-works .buyers-for {
+    background: #004858;
+
+    margin-bottom: 60px;
+}
+
+.sellers-for-add.buyers-for img.card-img-top {
+    background: #ea3731;
+}
+
+.sellers-for-add.buyers-for h5.card-title.text-center {
+    color: #ea3731;
+}
+
+/*insurance-agencies-css*/
+
+.insurance-agencies {
+    position: relative;
+}
+
+.agency-banner {
+    color: white;
+
+    max-width: 100%;
+
+    background: linear-gradient(to right, #c82929, #1c2e45), url("./images/insurance-shap.png");
+
+    background-repeat: no-repeat;
+
+    background-size: cover;
+
+    background-position: center;
+
+    border-radius: 20px;
+
+    width: 100%;
+
+    margin: auto;
+
+    margin-bottom: -85px;
+}
+
+.insurance-agencies .inner-tabs-text {
+    width: 100%;
+
+    background: url(./images/insurance-shap.png);
+
+    background-repeat: no-repeat;
+
+    background-size: cover;
+
+    background-position: bottom;
+
+    padding: 24px;
+
+    border-radius: 15px;
+}
+
+.agency-content {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+.insurance-agencies .text-content {
+    max-width: 60%;
+}
+
+.insurance-agencies .text-content h2 {
+    font-size: 36px;
+
+    font-weight: 700;
+
+    margin-bottom: 8px;
+
+    font-family: "Poppins";
+}
+
+.insurance-agencies .text-content p {
+    font-size: 15px;
+
+    margin-bottom: 16px;
+
+    width: 90%;
+
+    font-family: "Poppins";
+
+    padding-top: 10px;
+}
+
+.inner-tabs-text {
+    width: 100%;
+
+    padding-left: 50px;
+}
+
+.register-button {
+    background-color: white;
+
+    color: #1c2e45;
+
+    padding: 10px 20px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    transition: background 0.3s, color 0.3s;
+}
+
+.vehicle-image {
+    width: 40%;
+}
+
+.register-button:hover {
+    background-color: #e5e5e5;
+}
+
+.vehicle-image img {
+    width: 90%;
+
+    float: right;
+
+    margin-right: 0;
+}
+
+.agency-content .text-content {
+    display: flex;
+
+    align-items: center;
+
+    max-width: max-content;
+
+    width: 100%;
+}
+
+.agency-content button.register-button {
+    width: 365px;
+
+    text-align: center;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    font-size: 17px;
+
+    font-family: "Poppins";
+
+    color: #000000;
+
+    border-radius: 10px;
+
+    padding: 10px 20px;
+}
+
+/*popup-modal-css*/
+
+div#loginModal .input-group i {
+    position: absolute;
+
+    top: 67%;
+
+    left: 10px;
+
+    transform: translateY(-50%);
+
+    color: #888;
+
+    font-size: 15px;
+}
+
+div#loginModal i#togglePassword {
+    position: absolute;
+
+    right: 25px;
+
+    left: 96%;
+
+    color: #ababab;
+
+    cursor: pointer;
+}
+
+.input-icon-wrapper {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+}
+
+.input-icon-wrapper i {
+    position: absolute;
+
+    color: #888;
+}
+
+.input-icon-wrapper input {
+    padding-left: 35px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+}
+
+div#loginModal .login-modal img {
+    height: auto;
+}
+
+div#loginModal .modal-content {
+    width: 38%;
+
+    margin: auto;
+
+    padding: 30px;
+
+    border-radius: 17px;
+
+    border: none;
+
+    padding-top: 0px;
+
+    top: 40px;
+}
+
+div#loginModal {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+div#loginModal span.close {
+    text-align: right;
+
+    color: #1c1c1e;
+
+    font-size: 35px;
+
+    cursor: pointer;
+
+    height: 25px;
+}
+
+.close-btn {
+    position: absolute;
+
+    top: 15px;
+
+    right: 20px;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    color: #333;
+}
+
+div#loginModal .logo {
+    text-align: center;
+
+    margin-bottom: 20px;
+}
+
+div#loginModal .logo img {
+    width: 150px;
+}
+
+.login-modal h2 {
+    text-align: left;
+
+    font-weight: 600;
+
+    margin-bottom: 35px;
+
+    color: #1c1c1e;
+
+    font-family: "Poppins";
+
+    font-size: 30px;
+}
+
+div#loginModal .login-modal {
+    width: 80%;
+
+    margin: auto;
+}
+
+div#loginModal .input-group {
+    margin-bottom: 20px;
+}
+
+div#loginModal .input-group label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-weight: 500;
+
+    font-family: "Poppins";
+
+    color: #999999;
+
+    font-size: 13px;
+}
+
+div#loginModal .input-group input {
+    width: 100%;
+
+    padding: 10px 12px;
+
+    border: none;
+
+    color: #1c1c1e;
+
+    font-size: 16px;
+
+    font-family: "Poppins";
+
+    border-bottom: solid 1px #999999;
+
+    border-radius: 0;
+
+    outline: none;
+
+    padding-left: 35px;
+}
+
+div#loginModal input[type="email"]:hover {
+    border-bottom: solid 1px #007bff !important;
+}
+
+div#loginModal .password-wrapper:hover {
+    border-bottom: solid 1px #007bff !important;
+}
+
+div#loginModal .password-wrapper {
+    display: flex;
+
+    width: 100%;
+
+    align-items: center;
+
+    border-bottom: solid 1px #999999 !important;
+}
+
+div#loginModal input[type="password"] {
+    border-bottom: none;
+
+    border-radius: 0;
+}
+
+div#loginModal .input-group input::placeholder {
+    color: #1c1c1e;
+}
+
+div#loginModal .options {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    font-size: 13px;
+
+    margin-bottom: 20px;
+}
+
+div#loginModal .options label {
+    display: flex;
+
+    align-items: center;
+
+    font-family: "Poppins";
+
+    color: #000000;
+}
+
+div#loginModal .options input[type="checkbox"] {
+    margin-right: 5px;
+
+    width: 20px;
+
+    height: 15px;
+}
+
+div#loginModal .options a {
+    color: #000000;
+
+    text-decoration: none;
+
+    font-family: "Poppins";
+}
+
+div#loginModal .login-btn {
+    width: 100%;
+
+    padding: 12px;
+
+    background: #007bff;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 4px;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    height: 50px;
+
+    justify-content: center;
+
+    font-family: "Poppins";
+
+    font-weight: 500;
+
+    box-shadow: 0 3px 15px rgb(0 0 0 / 15%);
+
+    margin-top: 40px;
+}
+
+div#loginModal .login-btn:hover {
+    background-color: #ea3731;
+}
+
+div#loginModal span.close:hover {
+    color: #ea3731;
+}
+
+div#loginModal .signup-link {
+    text-align: center;
+
+    margin-top: 20px;
+
+    font-size: 15px;
+
+    color: #000000;
+
+    font-family: "Poppins";
+}
+
+div#loginModal .signup-link a {
+    color: #ff6a00;
+
+    text-decoration: none;
+
+    font-weight: 500;
+}
+
+div#loginModal .or-divider {
+    text-align: center;
+
+    margin: 20px 0;
+
+    color: #b5b5b5;
+
+    font-size: 15px;
+
+    font-family: "Poppins";
+}
+
+div#loginModal .social-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+}
+
+div#loginModal .social-buttons img {
+    width: 35px;
+
+    height: 35px;
+
+    cursor: pointer;
+}
+
+div#signupModal {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+div#signupModal .modal-content {
+    width: 100%;
+
+    border: none;
+
+    border-radius: 17px;
+}
+
+div#signupModal .social-buttons img {
+    width: 35px;
+
+    height: 35px;
+
+    cursor: pointer;
+}
+
+.signup-container {
+    background: #fff;
+
+    padding: 30px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+    width: 100%;
+
+    max-width: 400px;
+}
+
+div#signupModal h2 {
+    padding-top: 20px;
+
+    margin-bottom: 35px;
+
+    font-size: 24px;
+
+    font-weight: 600;
+
+    color: #111;
+}
+
+div#signupModal .form-group {
+    margin-bottom: 15px;
+}
+
+div#signupModal .form-group label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-weight: 500;
+
+    font-family: "Poppins";
+
+    color: #999999;
+
+    font-size: 13px;
+}
+
+i.fa-solid.fa-eye.togglePassword {
+    color: #ababab;
+}
+
+div#signupModal .form-group input {
+    transition: border 0.3s;
+
+    width: 100%;
+
+    padding: 10px 12px;
+
+    border: none;
+
+    color: #1c1c1e;
+
+    font-size: 16px;
+
+    font-family: "Poppins";
+
+    border-bottom: solid 1px #999999;
+
+    border-radius: 0;
+
+    outline: none;
+
+    padding-left: 25px;
+}
+
+.input-icon-wrapper i#togglePassword {
+    position: absolute;
+
+    right: 25px;
+
+    left: 96%;
+
+    color: #ababab;
+
+    cursor: pointer;
+}
+
+div#signupModal .form-group input::placeholder {
+    color: #1c1c1e;
+}
+
+div#signupModal .form-group input:focus {
+    border-color: #007bff;
+
+    outline: none;
+}
+
+div#signupModal .register-btn {
+    width: 100%;
+
+    padding: 12px;
+
+    background: #007bff;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 4px;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    height: 50px;
+
+    justify-content: center;
+
+    font-family: "Poppins";
+
+    font-weight: 500;
+
+    box-shadow: 0 3px 15px rgb(0 0 0 / 15%);
+
+    margin-top: 40px;
+}
+
+div#signupModal .login-link {
+    text-align: center;
+
+    margin-top: 15px;
+
+    font-size: 14px;
+}
+
+div#signupModal .login-link a {
+    color: #f90;
+
+    text-decoration: none;
+
+    font-weight: 600;
+}
+
+div#signupModal .logo img {
+    height: auto;
+
+    margin: auto;
+
+    display: flex;
+
+    width: 150px;
+
+    margin-top: -25px;
+}
+
+div#signupModal .modal-header {
+    border: none;
+}
+
+div#signupModal .input-add {
+    display: flex;
+
+    width: 100%;
+
+    gap: 30px;
+}
+
+div#signupModal .modal-body {
+    padding-top: 0px;
+
+    padding-bottom: 30px;
+}
+
+div#signupModal .signup-link {
+    text-align: center;
+
+    margin-top: 20px;
+
+    font-size: 15px;
+
+    color: #000000;
+
+    font-family: "Poppins";
+}
+
+div#signupModal .signup-link a {
+    color: #ff6a00;
+
+    text-decoration: none;
+
+    font-weight: 500;
+}
+
+div#signupModal .register-btn:hover {
+    background-color: #ea3731;
+}
+
+div#signupModal .social-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+}
+
+div#signupModal .or-divider.mt-3 {
+    text-align: center;
+
+    margin: 20px 0;
+
+    color: #b5b5b5;
+
+    font-size: 15px;
+
+    font-family: "Poppins";
+}
+
+div#signupModal .modal-dialog {
+    transform: none;
+
+    max-width: 38% !important;
+}
+
+div#signupModal .login-modal {
+    width: 80%;
+
+    margin: auto;
+}
+
+div#signupModal .modal-header button.btn-close {
+    text-align: right;
+
+    color: #1c1c1e;
+
+    height: 25px;
+
+    padding-right: 26px;
+
+    font-size: 14px;
+}
+
+/*footer-css-start*/
+
+footer.arab-footer-section {
+    background-color: #000000;
+
+    padding: 50px 0;
+
+    border-top: solid 5px #ea3731;
+}
+
+footer.arab-footer-section .container {
+    padding: 0;
+}
+
+footer.arab-footer-section .social-media-icons.text-white a {
+    display: flex;
+
+    flex-direction: column;
+
+    text-decoration: none;
+
+    color: #fff;
+}
+
+footer.arab-footer-section ul.list-unstyled li {
+    line-height: 2.3;
+}
+
+footer.arab-footer-section .arab-footer-three a {
+    line-height: 2.2;
+}
+
+footer.arab-footer-section .arab-footer-one p {
+    font-size: 16px;
+
+    color: #000000;
+
+    font-family: "Roboto";
+
+    margin-bottom: 0px;
+
+    padding-top: 25px;
+
+    padding-right: 20px;
+}
+
+footer.arab-footer-section ul.list-unstyled li a {
+    color: #fff;
+
+    font-family: "Poppins";
+
+    font-size: 14px;
+
+    font-weight: 400;
+}
+
+footer.arab-footer-section i.fa.fa-angle-right {
+    color: #000000;
+
+    font-size: 14px;
+
+    padding-right: 8px;
+}
+
+footer.arab-footer-section .arab-footer-four p {
+    color: #000000;
+
+    font-size: 14px;
+
+    font-family: "Poppins";
+}
+
+footer.arab-footer-section .arab-footer-four input.form-control {
+    font-size: 14px;
+
+    border: solid 1px #e5e5ea;
+
+    height: 54px;
+
+    font-family: "Poppins";
+
+    color: #000000;
+
+    border-radius: 10px;
+
+    margin-bottom: 20px;
+}
+
+footer.arab-footer-section .arab-footer-four input.form-control:focus {
+    box-shadow: none;
+}
+
+footer.arab-footer-section .arab-footer-four button.btn.btn-primary.btn-sm {
+    background-color: #ea3731;
+
+    border: none;
+
+    font-family: "Poppins";
+
+    font-size: 15px;
+
+    display: flex;
+
+    justify-content: center;
+
+    width: 100%;
+
+    height: 54px;
+
+    align-items: center;
+
+    font-weight: 700;
+
+    border-radius: 10px;
+
+    margin-top: 13px;
+}
+
+footer.arab-footer-section .arab-footer-four label.form-check-box {
+    font-size: 14px;
+
+    font-family: "Poppins";
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+footer.arab-footer-section .arab-footer-four input[type="checkbox"] {
+    width: 20px;
+
+    height: 20px;
+}
+
+/*footer.arab-footer-section .arab-footer-four button.btn.btn-primary.btn-sm:hover {
+
+    background-color: #1489d1;
+
+}*/
+
+footer.arab-footer-section .arab-footer-three ul.list-unstyled i {
+    font-family: "FontAwesome";
+
+    color: #000000;
+
+    padding-right: 8px;
+}
+
+.rights-reserved {
+    background-color: #000000;
+
+    color: #fff;
+
+    text-align: center;
+}
+
+.rights-reserved p {
+    margin-bottom: 0px;
+
+    padding: 25px 0;
+
+    font-family: "Roboto";
+
+    font-size: 15px;
+
+    border-top: solid 1px #827575;
+
+    width: 87%;
+
+    margin: auto;
+}
+
+footer.arab-footer-section ul.list-unstyled li a:hover {
+    color: #ea3731;
+}
+
+footer.arab-footer-section .coach-footer-three ul.list-unstyled i:hover {
+    color: #009bfa;
+}
+
+footer.arab-footer-section i.fa.fa-angle-right:hover {
+    color: #009bfa;
+}
+
+footer.arab-footer-section .coach-footer-three {
+    padding-left: 30px;
+}
+
+.arab-footer-two {
+    padding-right: 0px;
+}
+
+.arab-footer-three .contact-profile {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    margin-bottom: 15px;
+
+    border-bottom: solid 1px #262424;
+
+    padding-bottom: 28px;
+
+    width: 80%;
+}
+
+.arab-footer-two .social-icons i {
+    font-family: "FontAwesome";
+
+    border: solid 2px #ea3731;
+
+    padding: 13px;
+
+    border-radius: 50px;
+
+    width: 40px;
+
+    height: 40px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    cursor: pointer;
+}
+
+.arab-footer-two .social-icons {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.arab-footer-two .social-icons i:hover {
+    background-color: #ea3731;
+}
+
+.arab-footer-three .contact-profile img {
+    width: 50px;
+}
+
+footer.arab-footer-section h5 {
+    padding-bottom: 25px;
+
+    font-family: "Poppins";
+
+    font-weight: 600;
+
+    font-size: 18px;
+}
+
+p.address-text span {
+    font-weight: 500;
+
+    font-size: 15px;
+
+    font-family: "Poppins";
+}
+
+.row.arab-footer-inner {
+    font-family: "Poppins";
+
+    padding-top: 100px;
+
+    margin: auto;
+}
+
+.arab-footer-inner .bi-chevron-right::before {
+    color: #fff;
+
+    content: "\f285";
+
+    font-size: 12px;
+}
+
+.profile-info {
+    font-size: 14px;
+}
+
+ul.nav-menu.mobile-view {
+    display: none !important;
+}
+
+
+
+@media only screen and (max-width: 767px) {
+  
+
+div#heroCarousel .carousel-item img {
+    height: 880px;
+    width: 100%;
+    align-items: center;
+    object-fit: cover;
+}
+section.hero-section.text-center.py-5 {
+    position: absolute;
+    top: 5%;
+}
+div#heroCarousel button.carousel-control-prev {
+    top: 85%;
+    left: 90px;
+}
+
+div#heroCarousel button.carousel-control-next {
+    top: 85%;
+    right: 140px !important;
+}
+
+    div#loginModal .modal-content {
+        width: 100%;
+        top: 20px;
+    }
+
+    div#loginModal .login-modal {
+        width: 100%;
+        margin: auto;
+    }
+    div#loginModal i#togglePassword {
+        position: absolute;
+        right: 25px;
+        left: 90%;
+        color: #ababab;
+        cursor: pointer;
+    }
+    div#signupModal .modal-dialog {
+        transform: none;
+        max-width: 100% !important;
+    }
+
+    div#signupModal .login-modal {
+        width: 100%;
+        margin: auto;
+    }
+    .input-icon-wrapper i#togglePassword {
+        position: absolute;
+        right: 25px;
+        left: 90%;
+        color: #ababab;
+        cursor: pointer;
+    }
+
+    nav.navbar.to-nav-add ul.nav-menu.list-unstyled.d-flex.mb-0 {
+        align-items: center;
+
+        padding: 15px 0px;
+
+        display: block !important;
+
+        line-height: 2.5;
+    }
+
+.hero-section .hero-title {
+    font-size: 35px;
+    padding-top: 50px;
+}
+
+
+    .hero-section .hero-subtext {
+        padding-top: 10px;
+        font-size: 16px;
+        width: 100%;
+    }
+.hero-section form.search-bar {
+    padding-bottom: 25px !important;
+    max-width: 93% !important;
+    padding: 0px 25px;
+    align-items: center;
+    height: auto;
+    display: block !important;
+    padding-top: 25px !important;
+    border-radius: 10px;
+}
+    .hero-section form.search-bar select,
+    .search-bar input {
+        color: #181a20;
+
+        margin-bottom: 10px;
+
+        width: 100%;
+    }
+
+    .search-bar input[type="text"] {
+        width: 100%;
+    }
+
+    .hero-section button.filter-search-btn {
+        margin: auto;
+
+        width: 50px;
+
+        height: 50px;
+    }
+
+    .hero-section .hero-subtext {
+        margin-bottom: 0px;
+
+        width: 100%;
+    }
+
+    .how-it-works h1.text-center.top-text {
+        font-size: 30px;
+
+        padding-top: 20px;
+    }
+
+    .it-text-work {
+        width: 100%;
+
+        margin: auto;
+    }
+
+    .sellers-for-add h1 {
+        font-size: 30px;
+
+        padding-top: 10px;
+
+        padding-bottom: 20px;
+    }
+
+    .row.how-it-inner .card {
+        border-radius: 20px;
+
+        padding: 20px 0;
+    }
+
+    .row.how-it-inner {
+        width: 100%;
+
+        margin: auto;
+
+        padding-bottom: 15px;
+
+        display: block;
+    }
+
+    .row.how-it-inner .card {
+        border-radius: 20px;
+
+        padding: 20px 0;
+
+        margin-bottom: 15px;
+    }
+
+    .sellers-for-add {
+        background: #ea3731;
+
+        margin: 20px 0;
+
+        padding: 20px 0;
+    }
+
+    .agency-content .text-content {
+        display: block;
+
+        align-items: center;
+
+        max-width: max-content;
+
+        width: 100%;
+    }
+
+    .agency-content button.register-button {
+        width: 85%;
+
+        margin: auto;
+    }
+
+    .agency-content {
+        display: block;
+
+        align-items: center;
+
+        justify-content: space-between;
+    }
+
+    .vehicle-image img {
+        width: 100%;
+
+        float: none;
+
+        margin-right: 0;
+
+        padding-bottom: 30px;
+    }
+
+    .vehicle-image {
+        width: 100%;
+
+        margin-top: 15px;
+    }
+
+    footer.arab-footer-section h5 {
+        padding-bottom: 10px;
+
+        font-family: "Poppins";
+
+        font-weight: 600;
+
+        font-size: 18px;
+
+        padding-top: 20px;
+    }
+
+    .row.arab-footer-inner {
+        font-family: "Poppins";
+
+        padding-top: 60px;
+
+        margin: auto;
+    }
+
+    .how-it-works .buyers-for {
+        margin-bottom: 40px;
+    }
+
+    .insurance-agencies .text-content h2 {
+        font-size: 26px;
+
+        margin-bottom: 3px;
+    }
+
+    .arab-part-top-navber-add .container {
+        padding: 0px 15px;
+        position: fixed;
+        top: 0px;
+        background-color: #fff;
+        z-index: 999;
+    }
+
+    button.navbar-toggler:focus {
+        box-shadow: none;
+    }
+
+    button.navbar-toggler.collapsed {
+        padding: 10px 10px;
+
+        border: solid 2px #e53935;
+    }
+
+    button.navbar-toggler {
+        padding: 10px 10px;
+    }
+
+    .arab-part-top-navber-add .contact-info {
+        display: block !important;
+
+        padding-top: 15px;
+
+        padding-bottom: 15px;
+    }
+
+.arab-part-top-navber-add .header {
+
+    display: none !important;
+}
+
+    .arab-part-top-navber-add .phone,
+    .email {
+        padding-bottom: 10px;
+    }
+
+    .arab-part-top-navber-add .language-login {
+        padding-left: 0px;
+    }
+
+    .arab-part-top-navber-add .search-box {
+        display: flex;
+
+        max-width: 100%;
+
+        margin: 0 0px;
+    }
+
+nav.navbar.to-nav-add {
+    margin-top: 100px;
+    display: none !important;
+}
+ul.nav-menu.mobile-view {
+    display: block !important;
+    padding-bottom: 20px;
+}
+ul.nav-menu.list-unstyled.d-flex.mb-0.mobile-view li a {
+    color: black;
+    text-decoration: none;
+    line-height: 3;
+    font-size: 16px;
+}
+
+ul.nav-menu.mobile-view button#dropdownMenuButton1 {
+    background: none;
+    border: none;
+    font-weight: 400;
+    font-family: "Poppins";
+    font-size: 16px;
+    padding: 0;
+    color: #000;
+}
+
+ul.nav-menu.list-unstyled.d-flex.mb-0.mobile-view li a:hover {
+    color: #e53935;
+}
+ul.nav-menu.mobile-view button#dropdownMenuButton1:hover {
+    color: #e53935;
+}
+
+
+}
