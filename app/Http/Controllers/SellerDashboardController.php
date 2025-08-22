@@ -73,9 +73,12 @@ class SellerDashboardController extends Controller
                         ->orderByDesc('total_searches')
                         ->limit(10)
                         ->get();
-                        
+
         return view('web.seller.dashboard',compact('user_detail','topProducts'));
     }
+
+
+
     public function myProfile(Request $request)
     {
         $country=DB::table('master_country')->where('country_status',1)->get();
@@ -83,7 +86,7 @@ class SellerDashboardController extends Controller
 
         $user_detail= $state=$city=$shop_detail="";
         $seller_service_ids=array();
-        
+
         $user_detail=DB::table('users')->where('id',Auth::id())->first();
         //$state=DB::table('master_state')->where('state_country_id',$user_detail->country_id)->get();
         $city=DB::table('master_city')->where('country_id',$user_detail->country_id)->get();
@@ -99,7 +102,7 @@ class SellerDashboardController extends Controller
         {
             $shop_detail=DB::table('shop_detail')->where('user_id',$user_detail->id)->first();
         }
-        
+
         if ($request->isMethod('post'))
         {
             // $useremail  = DB::table('users')->where('email', '=' , $request->email)->where('id', '!=' , Auth::id())->where('is_deleted', '=' , 0)->first();
@@ -112,53 +115,58 @@ class SellerDashboardController extends Controller
             $user = User::find(Auth::id());
             $message="Seller profile updated successfully.";
 
-            if ($request->hasFile('profile_image')) {
-                $image = $request->file('profile_image');
-                $imageName = "pro" . time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('/uploads/profile_image'), $imageName);
-                $user->profile_image = $imageName;
-            }
+            // if ($request->hasFile('profile_image')) {
+            //     $image = $request->file('profile_image');
+            //     $imageName = "pro" . time() . '.' . $image->getClientOriginalExtension();
+            //     $image->move(public_path('/uploads/profile_image'), $imageName);
+            //     $user->profile_image = $imageName;
+            // }
 
             $user->first_name       = $request->first_name;
             $user->mobile           = $request->mobile;
             $user->mobile_2         = $request->mobile_2;
             $user->whatsapp1        = $request->whatsapp1;
             $user->whatsapp2        = $request->whatsapp2;
-            $user->latitude         = $request->latitude;
-            $user->longitude        = $request->longitude;
+            // $user->latitude         = $request->latitude;
+            // $user->longitude        = $request->longitude;
             // $user->last_name        = $request->last_name;
-            $user->email            = $request->email;
+            // $user->email            = $request->email;
             $user->user_name        = $request->user_name;
-           
+
             if($request->password!='')
             {
                 $user->password         = Hash::make($request->password);
             }
-           
+
             // $user->gender           = $request->gender;
             $user->country_id       = $request->country_id;
             // $user->state_id         = $request->state_id;
             $user->city_id          = $request->city_id;
             $user->address1         = $request->address1;
             $user->address2         = $request->address2;
-            $user->address1_ar      = $request->address1_ar;
-            $user->address2_ar      = $request->address2_ar;
-            $user->zip_code         = $request->zip_code;
+            // $user->address1_ar      = $request->address1_ar;
+            // $user->address2_ar      = $request->address2_ar;
+            // $user->zip_code         = $request->zip_code;
             $user->user_timezone    = $request->user_time;
             $user->save();
             $user_id=$user->id;
 
             //$shop = ShopDetail::find(Auth::id());
             $shop = ShopDetail::where('user_id',Auth::id())->first();
-            
-            if (!$shop) 
+
+            if (!$shop)
             {
-                $shop = new ShopDetail(); 
+                $shop = new ShopDetail();
             }
             $shop->user_id=$user_id;
             $shop->shop_name=$request->shop_name;
             $shop->shop_name_ar=$request->shop_name_ar;
             $shop->about_shop=$request->about_shop;
+            // $shop->about_shop_ar=$request->about_shop_ar :??'';
+            // $shop->about_shop_fr=$request->about_shop_fr;
+            // $shop->about_shop_ru=$request->about_shop_ru;
+            // $shop->about_shop_fa=$request->about_shop_fa;
+            // $shop->about_shop_ur=$request->about_shop_ur;
 
             if ($request->hasFile('shop_logo')) {
                 $image = $request->file('shop_logo');
@@ -188,8 +196,8 @@ class SellerDashboardController extends Controller
             //             ['seller_id' => Auth::id(), 'service_id' => $service_id],
             //             ['created_at' => now()] // optional if you have timestamps
             //         );
-            //     }   
-            // }   
+            //     }
+            // }
             return redirect()->route("seller.myProfile")->with("success", $message);
         }
 
@@ -261,7 +269,7 @@ class SellerDashboardController extends Controller
             $query->where('product.subcategory_id', $request->subcategory_id);
         }
         $query->distinct('product.id');
-        
+
         // Important: select necessary columns only, avoid ambiguous column names
         $query->select(
                     'product.id','product.stock_number',
@@ -274,13 +282,13 @@ class SellerDashboardController extends Controller
                 );
         $query->orderBy('generation_year.start_year', 'desc');
 
-        
+
         if ($request->has('prevent')) {
             return DataTables::of(collect([]))->make(true);
         }
         return DataTables::of($query)
                             ->addIndexColumn()
-                            
+
                             ->addColumn('checkbox', function($row) {
                                 return '<input type="checkbox" name="ids[]" value="'.$row->id.'" class="selectBox">';
                             })
@@ -301,7 +309,7 @@ class SellerDashboardController extends Controller
 
                                 return "{$cat}<br>{$subcat}<br>{$plab}";
                             })
-                            
+
                             ->addColumn('image', function($row) {
                                         $imgUrl = !empty($row->product_image)
                                             ? asset('/public/uploads/product_image/' . $row->product_image)
@@ -313,22 +321,22 @@ class SellerDashboardController extends Controller
                                                 </div>';
                                     })
                             ->addColumn('description', function($row) {
-                                        return '<input type="text" class="form-control form-control-sm update-field" 
-                                                    data-id="'.$row->id.'" data-field="product_description" 
+                                        return '<input type="text" class="form-control form-control-sm update-field"
+                                                    data-id="'.$row->id.'" data-field="product_description"
                                                     value="'.$row->product_description.'">';
                                     })
                             ->addColumn('price', function($row) {
-                                        return '<input type="number" class="form-control form-control-sm update-field" 
-                                                    data-id="'.$row->id.'" data-field="product_price" 
+                                        return '<input type="number" class="form-control form-control-sm update-field"
+                                                    data-id="'.$row->id.'" data-field="product_price"
                                                     value="'.$row->product_price.'" min="0">';
                                     })
                             ->addColumn('copyp', function($row) {
                                        return '<a href="javascript:void(0)" class="copy-product" data-id="'.$row->id.'">' . __('messages.copy') . '</a>';
                                     })
-                                    
+
                             // ->addColumn('quantity', function($row) {
-                            //             return '<input type="number" class="form-control form-control-sm update-field" 
-                            //                         data-id="'.$row->id.'" data-field="quantity" 
+                            //             return '<input type="number" class="form-control form-control-sm update-field"
+                            //                         data-id="'.$row->id.'" data-field="quantity"
                             //                         value="'.$row->quantity.'" min="0">';
                             //         })
                             // ->addColumn('type', function($row) {
@@ -342,7 +350,7 @@ class SellerDashboardController extends Controller
                             //                 <option value="2" '.$selected2.'>Old</option>
                             //                 <option value="3" '.$selected3.'>Refurbished</option>
                             //             </select>';
-                            // })        
+                            // })
                             // ->addColumn('status', function($row) {
                             //     $selected0 = $row->is_active == 0 ? 'selected' : '';
                             //     $selected1 = $row->is_active == 1 ? 'selected' : '';
@@ -378,7 +386,7 @@ class SellerDashboardController extends Controller
                                 }
                             })
                             ->rawColumns(['copyp','brand','subcategory','checkbox', 'status', 'action', 'price', 'quantity','type','description','image'])
-                            ->make(true);     
+                            ->make(true);
     }
     public function copyProduct(Request $request)
     {
@@ -409,7 +417,7 @@ class SellerDashboardController extends Controller
         }
 
         $newProduct->stock_number = 'ACP' . str_pad($nextNumber, 9, '0', STR_PAD_LEFT);
-        
+
         $newProduct->save();
 
         $image = ProductImage::where('product_id', $product->id)->first();
@@ -418,7 +426,7 @@ class SellerDashboardController extends Controller
             $newImage->product_id = $newProduct->id;
             $newImage->save();
         }
-    
+
 
         return response()->json(['success' => true]);
     }
@@ -445,7 +453,7 @@ class SellerDashboardController extends Controller
                                     'subcategory.subcat_name as subcategory_name','generation_year.start_year','generation_year.end_year'
                                 )
                                 ->first();
-        
+
 
         $image=DB::table('product_img')->where('product_id',$id)->first();
 
@@ -489,11 +497,11 @@ class SellerDashboardController extends Controller
         $filename = "pro" . time() . '.' . $file->getClientOriginalExtension();
         $file->move(public_path('uploads/product_image'), $filename);
 
-        
+
         \DB::table('product_img')->updateOrInsert(
                 ['product_id' => $request->product_id],     // Match condition
                 ['product_image' => $filename,'created_at'=>date('Y-m-d H:i:s')]   ,           // Data to insert/update
-                
+
             );
 
         return response()->json([
@@ -523,7 +531,7 @@ class SellerDashboardController extends Controller
     public function addProduct(Request $request, $id = null)
     {
         //This function is for add/update admin product
-       
+
         $product_detail=$subcategory=$model=$image="";
         $selectedYearIds=array();
 
@@ -572,9 +580,9 @@ class SellerDashboardController extends Controller
 
             $product = Product::find($request->product_id);
             $message="Product updated successfully.";
-            if (!$product) 
+            if (!$product)
             {
-                $product = new Product(); 
+                $product = new Product();
 
                 $product->brand_id         = $request->brand_id;
                 $product->model_id         = $request->model_id;
@@ -585,10 +593,10 @@ class SellerDashboardController extends Controller
 
                 $message="Product added successfully.";
             }
-                        
+
             $product->product_note          = $request->product_note;
             $product->quantity              = $request->quantity;
-            $product->product_price         = $request->product_price; 
+            $product->product_price         = $request->product_price;
             $product->product_type          = $request->product_type;
             $product->product_description   = $request->product_description;
             $product->product_milage        = $request->product_milage;
@@ -599,13 +607,13 @@ class SellerDashboardController extends Controller
                 $image = $request->file('product_image');
                 $imageName = "prd" . time() . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('/uploads/product_image'), $imageName);
-               
+
 
                 $productimg = ProductImage::find($request->product_image_id);
-                
-                if (!$productimg) 
+
+                if (!$productimg)
                 {
-                    $productimg = new ProductImage(); 
+                    $productimg = new ProductImage();
                     $productimg->product_id=$product_id;
                 }
                 $productimg->product_image = $imageName;
@@ -614,7 +622,7 @@ class SellerDashboardController extends Controller
 
             return redirect()->route("seller.productList")->with("success", $message);
         }
-        
+
         return view('web.seller.addProduct',compact('brand','category','product_detail','make_year','subcategory','model','selectedYearIds','image'));
     }
 
@@ -650,7 +658,7 @@ class SellerDashboardController extends Controller
             $image=DB::table('product_img')->where('product_id',$id)->first();
 
         }
-        
+
         return view('web.seller.editProduct',compact('product_detail','image'));
     }
 
@@ -697,7 +705,7 @@ class SellerDashboardController extends Controller
 
         return view('web.seller.bulk_product',compact('product','brand','category','model','subcategory','mparents'));
     }
-    
+
     public function getProduct(Request $request)
     {
         $query = ProductTemplate::query()
@@ -733,7 +741,7 @@ class SellerDashboardController extends Controller
         }
 
         $query->distinct('product_template.id');
-        
+
         // Important: select necessary columns only, avoid ambiguous column names
         $query->select(
                     'product_template.id',
@@ -774,15 +782,15 @@ class SellerDashboardController extends Controller
     {
         // Allow longer execution time (5 minutes)
         set_time_limit(3000);
-    
+
         $request->validate(['products' => 'required|array']);
-    
+
         // Process in chunks of 50 products to reduce memory/time load
         $chunks = array_chunk($request->products, 500);
-    
+
         foreach ($chunks as $chunk) {
             foreach ($chunk as $item) {
-    
+
                 $adminProductId   = $item['product_id'];
                 $part_type_id     = $item['part_type_id'];
 
@@ -800,15 +808,15 @@ class SellerDashboardController extends Controller
                                 ->where('is_deleted', 0)
                                 ->where('seller_id', auth()->id())
                                 ->exists();
-    
+
                 if ($exists) {
                     //check if product is already exist
                     continue;
                 }
-    
-                
-                
-    
+
+
+
+
                 // Insert new product record
                 $product = Product::create([
                     'seller_id'         => auth()->id(),
@@ -827,13 +835,13 @@ class SellerDashboardController extends Controller
                     'created_at'        => now(),
                     'updated_at'        => now(),
                 ]);
-    
+
                 // Batch insert product years
                 /*
                 $yearIds = DB::table('admin_product_year')
                     ->where('admin_product_id', $adminProduct->id)
                     ->pluck('make_year_id');
-    
+
                 $yearsData = [];
                 foreach ($yearIds as $yearId) {
                     $yearsData[] = [
@@ -869,13 +877,13 @@ class SellerDashboardController extends Controller
 
                 if (!empty($generationInsertData)) {
                     DB::table('generation_product')->insertOrIgnore($generationInsertData);
-                }    
+                }
                 */
                 // Batch insert product images
                 $images = DB::table('admin_product_img')
                     ->where('admin_product_id', $adminProduct->id)
                     ->get();
-    
+
                 $imagesData = [];
                 foreach ($images as $image) {
                     $imagesData[] = [
@@ -890,7 +898,7 @@ class SellerDashboardController extends Controller
                 }
             }
         }
-    
+
         return response()->json(['status' => 'success', 'message' => 'Products saved successfully']);
     }
 
@@ -930,7 +938,7 @@ class SellerDashboardController extends Controller
         return view('web.seller.all_product',compact('product','brand','category','model','subcategory','mparents'));
     }
 
-    
+
 
     public function getCatalogueProduct(Request $request)
     {
@@ -1023,13 +1031,13 @@ class SellerDashboardController extends Controller
                     $plab = $row->part_type_label ?? '';
 
                     return trim("{$cat} <br>{$subcat} <br>{$plab}");
-                })    
-            
+                })
+
             // Image column
             ->addColumn('image', function($row) use ($sellerProducts) {
                 $key = $row->id . '-' . $row->part_type_id;
                 $image = $sellerProducts[$key]->product_image ?? null;
-                $imgUrl = $image 
+                $imgUrl = $image
                     ? asset('/public/uploads/product_image/' . $image) :($row->product_image?asset('/public/uploads/product_image/'.$row->product_image):asset('/public/web_assets/images/no_image.png'));
 
                 $disabledClass = !isset($sellerProducts[$key]) ? 'disabled-image' : '';
@@ -1072,9 +1080,9 @@ class SellerDashboardController extends Controller
                 $checked = isset($sellerProducts[$key]) ? 'checked' : '';
                 $sellerProductId = $sellerProducts[$key]->seller_product_id ?? '';
 
-                return '<input type="checkbox" class="product-check" 
-                            data-product-id="' . $row->id . '" 
-                            data-part-type-id="' . $row->part_type_id . '" 
+                return '<input type="checkbox" class="product-check"
+                            data-product-id="' . $row->id . '"
+                            data-part-type-id="' . $row->part_type_id . '"
                             data-seller-product-id="' . $sellerProductId . '"
                             ' . $checked . '>';
             })
@@ -1128,7 +1136,7 @@ class SellerDashboardController extends Controller
             return response()->json(['error' => 'Product template not found'], 404);
         }
 
-        
+
         // Insert new seller product
         $product = new Product();
         $product->seller_id = $sellerId;
@@ -1143,12 +1151,12 @@ class SellerDashboardController extends Controller
         $product->is_active = 1;
         $product->created_at=now();
 
-        //assign the stock number 
+        //assign the stock number
         $lastProduct = Product::whereNotNull('stock_number')
                                 ->orderByDesc('id')
                                 ->first();
 
-        if ($lastProduct && preg_match('/ACP(\d+)/', $lastProduct->stock_number, $matches)) 
+        if ($lastProduct && preg_match('/ACP(\d+)/', $lastProduct->stock_number, $matches))
         {
             $lastNumber = (int)$matches[1];
             $nextNumber = $lastNumber + 1;
@@ -1164,7 +1172,7 @@ class SellerDashboardController extends Controller
         $images = DB::table('admin_product_img')
                     ->where('admin_product_id', $template->id)
                     ->first();
-    
+
         $imagesData = [];
         if($images)
         {

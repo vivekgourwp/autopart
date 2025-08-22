@@ -109,7 +109,7 @@
                         <div class="description">
                             <h4 class="title">{{$product->product_note}}</h4>
 
-                            <p><strong>Description</strong></p>
+                            <p><strong>{{ __('messages.Description') }} </strong></p>
                             <p>
                                 {{$product->product_description}}
                             </p>
@@ -136,7 +136,7 @@
                                 <div class="feature">
                                     <span>{{$services->service_name}}</span>
                                     <i class="bi bi-wrench"></i>
-                                </div>  
+                                </div>
                             @else
                                 <div class="feature">
                                     <span>{{$services->service_name}}</span>
@@ -152,7 +152,7 @@
     </div>
 </div>
 
-@endsection @push('scripts') 
+@endsection @push('scripts')
 <script>
     $(document).ready(function() {
         $('.select2').select2({
@@ -200,7 +200,7 @@
     */
     $(document).ready(function () {
     $(document).on('change', '#brand', function () {
-       
+
         var cid = this.value;   //let cid = $(this).val(); we cal also write this.
         $.ajax({
         url: "{{url('/admin/getModel')}}",

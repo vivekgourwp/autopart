@@ -22,7 +22,7 @@ class HomeController extends Controller
     public function index()
     {
         $locale = App::getLocale();
-        $brands=DB::table('brand')->where('is_active',1)->where('is_deleted',0)->get();
+        $brands = DB::table('brand')->where('is_active', 1)->where('is_deleted', 0)->get();
         $brand = $brands->map(function ($item) use ($locale) {
             $item->brand_name = $locale == 'ar' ? $item->ar_brand_name : $item->brand_name;
             $item->brand_name = $locale == 'fr' ? $item->fr_brand_name : $item->brand_name;
@@ -32,7 +32,7 @@ class HomeController extends Controller
             return $item;
         });
 
-        $categorys=DB::table('category')->where('is_active',1)->where('is_deleted',0)->get();
+        $categorys = DB::table('category')->where('is_active', 1)->where('is_deleted', 0)->get();
         $category = $categorys->map(function ($item) use ($locale) {
             $item->category_name = $locale == 'ar' ? $item->ar_category_name : $item->category_name;
             $item->category_name = $locale == 'fr' ? $item->fr_category_name : $item->category_name;
@@ -42,15 +42,15 @@ class HomeController extends Controller
             return $item;
         });
 
-        $make_year=DB::table('make_year')->where('is_active',1)->where('is_deleted',0)->orderby('id','desc')->get();
-        $country=DB::table('master_country')->where('country_status',1)->get();
+        $make_year = DB::table('make_year')->where('is_active', 1)->where('is_deleted', 0)->orderby('id', 'desc')->get();
+        $country = DB::table('master_country')->where('country_status', 1)->get();
 
-        $citys=DB::table('master_city')->join('master_country','master_country.country_id','=','master_city.country_id')->where('master_country.country_status',1)->where('master_city.city_status',1)->get();
+        $citys = DB::table('master_city')->join('master_country', 'master_country.country_id', '=', 'master_city.country_id')->where('master_country.country_status', 1)->where('master_city.city_status', 1)->get();
         $city = $citys->map(function ($item) use ($locale) {
             $item->city_name = $locale == 'ar' ? $item->city_name_ar : $item->city_name;
             return $item;
         });
-        return view('web.index',compact('brand','category','make_year','country','city'));
+        return view('web.index', compact('brand', 'category', 'make_year', 'country', 'city'));
     }
     public function productLists(Request $request)
     {
@@ -81,25 +81,25 @@ class HomeController extends Controller
         $filterYear = $request->year ? (int)$request->year : null;
         $useLocation = false;
 
-            if ($request->city_id) {
-                $city = DB::table('master_city')->where('city_id', $request->city_id)->first();
-                if ($city && $city->latitude && $city->longitude) {
-                    $latitude = $city->latitude;
-                    $longitude = $city->longitude;
-                    $useLocation = true;
-                }
-            } elseif ($request->country_id) {
-                $countryRow = DB::table('master_country')->where('country_id', $request->country_id)->first();
-                if ($countryRow && $countryRow->latitude && $countryRow->longitude) {
-                    $latitude = $countryRow->latitude;
-                    $longitude = $countryRow->longitude;
-                    $useLocation = true;
-                }
-            } elseif ($request->user_latitude && $request->user_longitude) {
-                $latitude = $request->user_latitude;
-                $longitude = $request->user_longitude;
+        if ($request->city_id) {
+            $city = DB::table('master_city')->where('city_id', $request->city_id)->first();
+            if ($city && $city->latitude && $city->longitude) {
+                $latitude = $city->latitude;
+                $longitude = $city->longitude;
                 $useLocation = true;
             }
+        } elseif ($request->country_id) {
+            $countryRow = DB::table('master_country')->where('country_id', $request->country_id)->first();
+            if ($countryRow && $countryRow->latitude && $countryRow->longitude) {
+                $latitude = $countryRow->latitude;
+                $longitude = $countryRow->longitude;
+                $useLocation = true;
+            }
+        } elseif ($request->user_latitude && $request->user_longitude) {
+            $latitude = $request->user_latitude;
+            $longitude = $request->user_longitude;
+            $useLocation = true;
+        }
         $radius = 100;
 
         $haversine = "(6371 * acos(cos(radians($latitude)) * cos(radians(users.latitude)) * cos(radians(users.longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(users.latitude))))";
@@ -146,14 +146,26 @@ class HomeController extends Controller
             ->where('product.is_deleted', 0)
             ->where('users.is_deleted', 0)
             ->select(
-                'product.id', 'product_img.product_image',
-                'brand.brand_name', 'make_model.model_name',
-                'category.category_name', 'subcategory.subcat_name',
-                'product.is_active', 'product.product_type', 'product.product_price',
-                'product.seller_id', 'users.first_name', 'users.last_name',
-                'master_city.city_name', 'master_country.country_name', 'master_state.state_name',
-                'generation_year.start_year', 'generation_year.end_year', 'users.mobile',
-                'part_type.part_type_label', 'product.admin_product_id',
+                'product.id',
+                'product_img.product_image',
+                'brand.brand_name',
+                'make_model.model_name',
+                'category.category_name',
+                'subcategory.subcat_name',
+                'product.is_active',
+                'product.product_type',
+                'product.product_price',
+                'product.seller_id',
+                'users.first_name',
+                'users.last_name',
+                'master_city.city_name',
+                'master_country.country_name',
+                'master_state.state_name',
+                'generation_year.start_year',
+                'generation_year.end_year',
+                'users.mobile',
+                'part_type.part_type_label',
+                'product.admin_product_id',
                 DB::raw("$haversine as distance_km")
             );
 
@@ -195,10 +207,10 @@ class HomeController extends Controller
 
         // STEP 4: Location filtering
         $productQuery
-        ->when($useLocation, function ($q) use ($haversine, $radius) {
-            $q->whereRaw("$haversine <= ?", [$radius])
-            ->orderByRaw("$haversine ASC");
-        });
+            ->when($useLocation, function ($q) use ($haversine, $radius) {
+                $q->whereRaw("$haversine <= ?", [$radius])
+                    ->orderByRaw("$haversine ASC");
+            });
 
 
         // STEP 5: Order by distance or fallback
@@ -222,58 +234,74 @@ class HomeController extends Controller
     {
 
         $locale = App::getLocale();
-        $brands=DB::table('brand')->where('is_active',1)->where('is_deleted',0)->get();
+        $brands = DB::table('brand')->where('is_active', 1)->where('is_deleted', 0)->get();
         $brand = $brands->map(function ($item) use ($locale) {
             $item->brand_name = $locale == 'ar' ? $item->ar_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'fr' ? $item->fr_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'ru' ? $item->ru_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'fa' ? $item->fa_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'ur' ? $item->ur_brand_name : $item->brand_name;
             return $item;
         });
 
-        $categorys=DB::table('category')->where('is_active',1)->where('is_deleted',0)->get();
+        $categorys = DB::table('category')->where('is_active', 1)->where('is_deleted', 0)->get();
         $category = $categorys->map(function ($item) use ($locale) {
             $item->category_name = $locale == 'ar' ? $item->ar_category_name : $item->category_name;
+            $item->category_name = $locale == 'fr' ? $item->fr_category_name : $item->category_name;
+            $item->category_name = $locale == 'ru' ? $item->ru_category_name : $item->category_name;
+            $item->category_name = $locale == 'fa' ? $item->fa_category_name : $item->category_name;
+            $item->category_name = $locale == 'ur' ? $item->ur_category_name : $item->category_name;
             return $item;
         });
 
-        $make_year=DB::table('make_year')->where('is_active',1)->where('is_deleted',0)->orderby('id','desc')->get();
-        $country=DB::table('master_country')->get();
+        $make_year = DB::table('make_year')->where('is_active', 1)->where('is_deleted', 0)->orderby('id', 'desc')->get();
+        $country = DB::table('master_country')->get();
 
-        $cityalls=DB::table('master_city')->join('master_country','master_country.country_id','=','master_city.country_id')->where('master_country.country_status',1)->where('master_city.city_status',1)->get();
+        $cityalls = DB::table('master_city')->join('master_country', 'master_country.country_id', '=', 'master_city.country_id')->where('master_country.country_status', 1)->where('master_city.city_status', 1)->get();
         $cityall = $cityalls->map(function ($item) use ($locale) {
             $item->city_name = $locale == 'ar' ? $item->city_name_ar : $item->city_name;
             return $item;
         });
 
         $model = DB::table('make_model')
-                ->where('is_active', 1)
-                ->where('is_deleted', 0)
-                ->when($request->brand_id, fn($q) => $q->where('brand_id', $request->brand_id))
-                ->get();
+            ->where('is_active', 1)
+            ->where('is_deleted', 0)
+            ->when($request->brand_id, fn($q) => $q->where('brand_id', $request->brand_id))
+            ->get();
         $models = $model->map(function ($item) use ($locale) {
             $item->model_name = $locale == 'ar' ? $item->ar_model_name : $item->model_name;
+            $item->model_name = $locale == 'fr' ? $item->fr_model_name : $item->model_name;
+            $item->model_name = $locale == 'ru' ? $item->ru_model_name : $item->model_name;
+            $item->model_name = $locale == 'fa' ? $item->fa_model_name : $item->model_name;
+            $item->model_name = $locale == 'ur' ? $item->ur_model_name : $item->model_name;
             return $item;
         });
 
         $generation = DB::table('generation_year')
-                ->where('is_deleted', 0)
-                ->when($request->model_id, fn($q) => $q->where('model_id', $request->model_id))
-                ->get();
+            ->where('is_deleted', 0)
+            ->when($request->model_id, fn($q) => $q->where('model_id', $request->model_id))
+            ->get();
 
         $subcategorys = DB::table('subcategory')
-                ->where('is_active', 1)
-                ->where('is_deleted', 0)
-                ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
-                ->get();
+            ->where('is_active', 1)
+            ->where('is_deleted', 0)
+            ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
+            ->get();
         $subcategory = $subcategorys->map(function ($item) use ($locale) {
             $item->subcat_name = $locale == 'ar' ? $item->ar_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'fr' ? $item->fr_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'ru' ? $item->ru_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'fa' ? $item->fa_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'ur' ? $item->ur_subcat_name : $item->subcat_name;
             return $item;
         });
 
         $filters = [
-                'brand_id' => $request->brand_id,
-                'model_id' => $request->model_id,
-                'category_id' => $request->category_id,
-                'subcategory_id' => $request->subcategory_id,
-            ];
+            'brand_id' => $request->brand_id,
+            'model_id' => $request->model_id,
+            'category_id' => $request->category_id,
+            'subcategory_id' => $request->subcategory_id,
+        ];
         $buyerLat = '22.28330000';
         $buyerLng = '46.73330000';
 
@@ -322,35 +350,49 @@ class HomeController extends Controller
                     'variant_id',
                 ]);
         }
-    //echo "<pre>";print_r($groupCombinations);die();
+        //echo "<pre>";print_r($groupCombinations);die();
         // STEP 3: Base product query with joins
         $productQuery = Product::query()
-                    ->join('users', 'users.id', '=', 'product.seller_id')
-                    ->leftJoin('brand', 'brand.id', '=', 'product.brand_id')
-                    ->leftJoin('make_model', 'make_model.id', '=', 'product.model_id')
-                    ->leftJoin('category', 'category.id', '=', 'product.category_id')
-                    ->leftJoin('subcategory', 'subcategory.id', '=', 'product.subcategory_id')
-                    ->leftJoin('product_img', 'product_img.product_id', '=', 'product.id')
-                    ->leftJoin('generation_year', 'generation_year.id', '=', 'product.generation_id') // THIS IS REQUIRED
-                    ->leftJoin('master_country', 'master_country.country_id', '=', 'users.country_id')
-                    //->leftJoin('master_state', 'master_state.state_id', '=', 'users.state_id')
-                    ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
-                    ->leftJoin('part_type', 'part_type.id', '=', 'product.part_type_id')
-                    ->leftJoin('shop_detail', 'shop_detail.user_id', '=', 'users.id')
-                    ->where('product.is_active', 1)
-                    ->where('product.is_deleted', 0)
-                    ->where('users.is_deleted', 0)
+            ->join('users', 'users.id', '=', 'product.seller_id')
+            ->leftJoin('brand', 'brand.id', '=', 'product.brand_id')
+            ->leftJoin('make_model', 'make_model.id', '=', 'product.model_id')
+            ->leftJoin('category', 'category.id', '=', 'product.category_id')
+            ->leftJoin('subcategory', 'subcategory.id', '=', 'product.subcategory_id')
+            ->leftJoin('product_img', 'product_img.product_id', '=', 'product.id')
+            ->leftJoin('generation_year', 'generation_year.id', '=', 'product.generation_id') // THIS IS REQUIRED
+            ->leftJoin('master_country', 'master_country.country_id', '=', 'users.country_id')
+            //->leftJoin('master_state', 'master_state.state_id', '=', 'users.state_id')
+            ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
+            ->leftJoin('part_type', 'part_type.id', '=', 'product.part_type_id')
+            ->leftJoin('shop_detail', 'shop_detail.user_id', '=', 'users.id')
+            ->where('product.is_active', 1)
+            ->where('product.is_deleted', 0)
+            ->where('users.is_deleted', 0)
 
             ->select(
-                'product.id','product.stock_number', 'product_img.product_image',
+                'product.id',
+                'product.stock_number',
+                'product_img.product_image',
                 'brand.brand_name as brand_name',
                 'make_model.model_name as model_name',
                 'category.category_name as category_name',
                 'subcategory.subcat_name as subcategory_name',
-                'product.is_active', 'product.product_type', 'product.product_price', 'product.seller_id','product.product_note',
-                'users.first_name', 'users.last_name','shop_detail.shop_name','shop_detail.shop_logo',
-                'master_city.city_name', 'master_country.country_name',
-                'generation_year.start_year', 'generation_year.end_year', 'users.mobile','part_type.part_type_label','product.admin_product_id'
+                'product.is_active',
+                'product.product_type',
+                'product.product_price',
+                'product.seller_id',
+                'product.product_note',
+                'users.first_name',
+                'users.last_name',
+                'shop_detail.shop_name',
+                'shop_detail.shop_logo',
+                'master_city.city_name',
+                'master_country.country_name',
+                'generation_year.start_year',
+                'generation_year.end_year',
+                'users.mobile',
+                'part_type.part_type_label',
+                'product.admin_product_id'
             );
         if ($buyerLat && $buyerLng) {
             $haversine = "(6371 * acos(cos(radians($buyerLat)) * cos(radians(users.latitude)) * cos(radians(users.longitude) - radians($buyerLng)) + sin(radians($buyerLat)) * sin(radians(users.latitude))))";
@@ -417,7 +459,7 @@ class HomeController extends Controller
                 // ✅ Ensure this year condition is included
                 if ($filterYear) {
                     $q->where('generation_year.start_year', '<=', $filterYear)
-                    ->where('generation_year.end_year', '>=', $filterYear);
+                        ->where('generation_year.end_year', '>=', $filterYear);
                 }
             });
 
@@ -426,33 +468,33 @@ class HomeController extends Controller
         //echo "<pre>";print_r($products);die();
         //Now get the filter information
         $bdetail = DB::table('brand')
-                    ->where('id', $request->brand_id)
-                    ->first();
+            ->where('id', $request->brand_id)
+            ->first();
         $mdetail = DB::table('make_model')
-                    ->where('id', $request->model_id)
-                    ->first();
+            ->where('id', $request->model_id)
+            ->first();
         $cdetail = DB::table('category')
-                    ->where('id', $request->category_id)
-                    ->first();
+            ->where('id', $request->category_id)
+            ->first();
         $sdetail = DB::table('subcategory')
-                    ->where('id', $request->subcategory_id)
-                    ->first();
-        $header=array(
-                        'year'=>$request->year,
-                        'brand'=>$bdetail?($locale == 'ar'?$bdetail->ar_brand_name:$bdetail->brand_name):'',
-                        'model'=>$mdetail?($locale == 'ar'?$mdetail->ar_model_name:$mdetail->model_name):'',
-                        'category'=>$cdetail?($locale == 'ar'?$cdetail->ar_category_name:$cdetail->category_name):'',
-                        'subcatagory'=>$sdetail?($locale == 'ar'?$sdetail->ar_subcat_name:$sdetail->subcat_name):'',
-                        );
-        return view('web.listing',compact('products','brand','category','models','subcategory','generation','make_year','country','header','cityall'));
+            ->where('id', $request->subcategory_id)
+            ->first();
+        $header = array(
+            'year' => $request->year,
+            'brand' => $bdetail ? ($locale == 'ar' ? $bdetail->ar_brand_name : $bdetail->brand_name) : '',
+            'model' => $mdetail ? ($locale == 'ar' ? $mdetail->ar_model_name : $mdetail->model_name) : '',
+            'category' => $cdetail ? ($locale == 'ar' ? $cdetail->ar_category_name : $cdetail->category_name) : '',
+            'subcatagory' => $sdetail ? ($locale == 'ar' ? $sdetail->ar_subcat_name : $sdetail->subcat_name) : '',
+        );
+        return view('web.listing', compact('products', 'brand', 'category', 'models', 'subcategory', 'generation', 'make_year', 'country', 'header', 'cityall'));
     }
 
     public function trackClick(Request $request)
     {
         DB::table('search_product')->insert([
             'product_id' => $request->product_id,
-            'seller_id'=>$request->seller_id,
-            'admin_product_id'=>$request->admin_product_id,
+            'seller_id' => $request->seller_id,
+            'admin_product_id' => $request->admin_product_id,
             'country' => $request->country,
             'state' => $request->state,
             'city' => $request->city,
@@ -465,91 +507,207 @@ class HomeController extends Controller
 
         return response()->json(['status' => 'success']);
     }
-    public function productDetail(Request $request,$id)
+    public function productDetail(Request $request, $id)
     {
         //This function is for product detail
         $locale = App::getLocale();
-        $brands=DB::table('brand')->where('is_active',1)->where('is_deleted',0)->get();
+        $brands = DB::table('brand')->where('is_active', 1)->where('is_deleted', 0)->get();
         $brand = $brands->map(function ($item) use ($locale) {
             $item->brand_name = $locale == 'ar' ? $item->ar_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'fr' ? $item->fr_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'ru' ? $item->ru_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'fa' ? $item->fa_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'ur' ? $item->ur_brand_name : $item->brand_name;
             return $item;
         });
 
-        $categorys=DB::table('category')->where('is_active',1)->where('is_deleted',0)->get();
+        $categorys = DB::table('category')->where('is_active', 1)->where('is_deleted', 0)->get();
         $category = $categorys->map(function ($item) use ($locale) {
             $item->category_name = $locale == 'ar' ? $item->ar_category_name : $item->category_name;
+            $item->category_name = $locale == 'fr' ? $item->fr_category_name : $item->category_name;
+            $item->category_name = $locale == 'ru' ? $item->ru_category_name : $item->category_name;
+            $item->category_name = $locale == 'fa' ? $item->fa_category_name : $item->category_name;
+            $item->category_name = $locale == 'ur' ? $item->ur_category_name : $item->category_name;
             return $item;
         });
 
+
+
+
         $models = DB::table('make_model')
-                ->where('is_active', 1)
-                ->where('is_deleted', 0)
-                ->when($request->brand_id, fn($q) => $q->where('brand_id', $request->brand_id))
-                ->get();
+            ->where('is_active', 1)
+            ->where('is_deleted', 0)
+            ->when($request->brand_id, fn($q) => $q->where('brand_id', $request->brand_id))
+            ->get();
         $model = $models->map(function ($item) use ($locale) {
             $item->model_name = $locale == 'ar' ? $item->ar_model_name : $item->model_name;
+            $item->model_name = $locale == 'fr' ? $item->fr_model_name : $item->model_name;
+            $item->model_name = $locale == 'ru' ? $item->ru_model_name : $item->model_name;
+            $item->model_name = $locale == 'fa' ? $item->fa_model_name : $item->model_name;
+            $item->model_name = $locale == 'ur' ? $item->ur_model_name : $item->model_name;
             return $item;
         });
 
         $subcategorys = DB::table('subcategory')
-                ->where('is_active', 1)
-                ->where('is_deleted', 0)
-                ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
-                ->get();
+            ->where('is_active', 1)
+            ->where('is_deleted', 0)
+            ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
+            ->get();
         $subcategory = $subcategorys->map(function ($item) use ($locale) {
             $item->subcat_name = $locale == 'ar' ? $item->ar_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'fr' ? $item->fr_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'ru' ? $item->ru_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'fa' ? $item->fa_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'ur' ? $item->ur_subcat_name : $item->subcat_name;
             return $item;
         });
 
-        $make_year=DB::table('make_year')->where('is_active',1)->where('is_deleted',0)->orderby('id','desc')->get();
-        $country=DB::table('master_country')->get();
 
-        $citys=DB::table('master_city')->join('master_country','master_country.country_id','=','master_city.country_id')->where('master_country.country_status',1)->where('master_city.city_status',1)->get();
+
+
+
+
+
+        $make_year = DB::table('make_year')->where('is_active', 1)->where('is_deleted', 0)->orderby('id', 'desc')->get();
+        $country = DB::table('master_country')->get();
+
+        $citys = DB::table('master_city')->join('master_country', 'master_country.country_id', '=', 'master_city.country_id')->where('master_country.country_status', 1)->where('master_city.city_status', 1)->get();
         $city = $citys->map(function ($item) use ($locale) {
             $item->city_name = $locale == 'ar' ? $item->city_name_ar : $item->city_name;
             return $item;
         });
 
-        $product = DB::table('product as p')
-                        ->leftJoin('brand as b', 'b.id', '=', 'p.brand_id')
-                        ->leftJoin('make_model as m', 'm.id', '=', 'p.model_id')
-                        ->leftJoin('category as c', 'c.id', '=', 'p.category_id')
-                        ->leftJoin('subcategory as s', 's.id', '=', 'p.subcategory_id')
-                        ->leftJoin('users as u', 'u.id', '=', 'p.seller_id')
-                        ->leftJoin('master_country as co', 'co.country_id', '=', 'u.country_id')
-                        //->leftJoin('master_state as st', 'st.state_id', '=', 'u.state_id')
-                        ->leftJoin('product_img as pm', 'pm.product_id', '=', 'p.id')
-                        ->leftJoin('generation_year as gy', 'gy.id', '=', 'p.generation_id')
-                        ->leftJoin('part_type as py', 'py.id', '=', 'p.part_type_id')
-                        ->leftJoin('shop_detail as sd', 'sd.user_id', '=', 'u.id')
-                        ->select(
-                            'p.*',
-                            DB::raw($locale == 'ar' ? 'b.ar_brand_name as brand_name' : 'b.brand_name as brand_name'),
-                            DB::raw($locale == 'ar' ? 'm.ar_model_name as model_name' : 'm.model_name as model_name'),
-                            DB::raw($locale == 'ar' ? 'c.ar_category_name as category_name' : 'c.category_name as category_name'),
-                            DB::raw($locale == 'ar' ? 's.ar_subcat_name as subcategory_name' : 's.subcat_name as subcategory_name'),
-                            'u.first_name',
-                            'u.last_name',
-                            'u.mobile','sd.shop_name','u.id as seller_id',
-                            'co.country_name',
-                            'pm.product_image','gy.start_year','gy.end_year','py.part_type_label'
-                        )
-                        ->where('p.id', $id)
-                        ->first();
-        $user  = DB::table('users')->where('id', '=' , $product->seller_id)
-                        ->leftJoin('master_country', 'master_country.country_id', '=', 'users.country_id')
-                        //->leftJoin('master_state', 'master_state.state_id', '=', 'users.state_id')
-                        ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
-                        ->select(
-                                'users.*',
-                                'master_city.city_name','master_country.country_name'
-                            )
-                        ->first();
-        $shop  = DB::table('shop_detail')->where('user_id', '=' , $product->seller_id)->first();
+
+
+
+
+        // $product = DB::table('product as p')
+        //     ->leftJoin('brand as b', 'b.id', '=', 'p.brand_id')
+        //     ->leftJoin('make_model as m', 'm.id', '=', 'p.model_id')
+        //     ->leftJoin('category as c', 'c.id', '=', 'p.category_id')
+        //     ->leftJoin('subcategory as s', 's.id', '=', 'p.subcategory_id')
+        //     ->leftJoin('users as u', 'u.id', '=', 'p.seller_id')
+        //     ->leftJoin('master_country as co', 'co.country_id', '=', 'u.country_id')
+        //     //->leftJoin('master_state as st', 'st.state_id', '=', 'u.state_id')
+        //     ->leftJoin('product_img as pm', 'pm.product_id', '=', 'p.id')
+        //     ->leftJoin('generation_year as gy', 'gy.id', '=', 'p.generation_id')
+        //     ->leftJoin('part_type as py', 'py.id', '=', 'p.part_type_id')
+        //     ->leftJoin('shop_detail as sd', 'sd.user_id', '=', 'u.id')
+        //     ->select(
+        //         'p.*',
+        //         DB::raw($locale == 'ar' ? 'b.ar_brand_name as brand_name' : 'b.brand_name as brand_name'),
+        //         DB::raw($locale == 'ar' ? 'm.ar_model_name as model_name' : 'm.model_name as model_name'),
+        //         DB::raw($locale == 'ar' ? 'c.ar_category_name as category_name' : 'c.category_name as category_name'),
+        //         DB::raw($locale == 'ar' ? 's.ar_subcat_name as subcategory_name' : 's.subcat_name as subcategory_name'),
+
+        //         'u.first_name',
+        //         'u.last_name',
+        //         'u.mobile',
+        //         'sd.shop_name',
+        //         'u.id as seller_id',
+        //         'co.country_name',
+        //         'pm.product_image',
+        //         'gy.start_year',
+        //         'gy.end_year',
+        //         'py.part_type_label'
+        //     )
+        //     ->where('p.id', $id)
+        //     ->first();
+
+
+
+
+        $translatedLocales = ['ar', 'fr', 'ru', 'fa', 'ur'];
+        if (in_array($locale, $translatedLocales)) {
+            $brandCol       = $locale . '_brand_name';
+            $modelCol       = $locale . '_model_name';
+            $categoryCol    = $locale . '_category_name';
+            $subcategoryCol = $locale . '_subcat_name';
+
+            $product = DB::table('product as p')
+                ->leftJoin('brand as b', 'b.id', '=', 'p.brand_id')
+                ->leftJoin('make_model as m', 'm.id', '=', 'p.model_id')
+                ->leftJoin('category as c', 'c.id', '=', 'p.category_id')
+                ->leftJoin('subcategory as s', 's.id', '=', 'p.subcategory_id')
+                ->leftJoin('users as u', 'u.id', '=', 'p.seller_id')
+                ->leftJoin('master_country as co', 'co.country_id', '=', 'u.country_id')
+                ->leftJoin('product_img as pm', 'pm.product_id', '=', 'p.id')
+                ->leftJoin('generation_year as gy', 'gy.id', '=', 'p.generation_id')
+                ->leftJoin('part_type as py', 'py.id', '=', 'p.part_type_id')
+                ->leftJoin('shop_detail as sd', 'sd.user_id', '=', 'u.id')
+                ->select(
+                    'p.*',
+                    DB::raw("COALESCE(b.$brandCol, b.brand_name) as brand_name"),
+                    DB::raw("COALESCE(m.$modelCol, m.model_name) as model_name"),
+                    DB::raw("COALESCE(c.$categoryCol, c.category_name) as category_name"),
+                    DB::raw("COALESCE(s.$subcategoryCol, s.subcat_name) as subcategory_name"),
+
+                    'u.first_name',
+                    'u.last_name',
+                    'u.mobile',
+                    'sd.shop_name',
+                    'u.id as seller_id',
+                    'co.country_name',
+                    'pm.product_image',
+                    'gy.start_year',
+                    'gy.end_year',
+                    'py.part_type_label'
+                )
+                ->where('p.id', $id)
+                ->first();
+        } else {
+            // default english
+            $product = DB::table('product as p')
+                ->leftJoin('brand as b', 'b.id', '=', 'p.brand_id')
+                ->leftJoin('make_model as m', 'm.id', '=', 'p.model_id')
+                ->leftJoin('category as c', 'c.id', '=', 'p.category_id')
+                ->leftJoin('subcategory as s', 's.id', '=', 'p.subcategory_id')
+                ->leftJoin('users as u', 'u.id', '=', 'p.seller_id')
+                ->leftJoin('master_country as co', 'co.country_id', '=', 'u.country_id')
+                ->leftJoin('product_img as pm', 'pm.product_id', '=', 'p.id')
+                ->leftJoin('generation_year as gy', 'gy.id', '=', 'p.generation_id')
+                ->leftJoin('part_type as py', 'py.id', '=', 'p.part_type_id')
+                ->leftJoin('shop_detail as sd', 'sd.user_id', '=', 'u.id')
+                ->select(
+                    'p.*',
+                    'b.brand_name as brand_name',
+                    'm.model_name as model_name',
+                    'c.category_name as category_name',
+                    's.subcat_name as subcategory_name',
+
+                    'u.first_name',
+                    'u.last_name',
+                    'u.mobile',
+                    'sd.shop_name',
+                    'u.id as seller_id',
+                    'co.country_name',
+                    'pm.product_image',
+                    'gy.start_year',
+                    'gy.end_year',
+                    'py.part_type_label'
+                )
+                ->where('p.id', $id)
+                ->first();
+        }
+
+
+
+
+        $user  = DB::table('users')->where('id', '=', $product->seller_id)
+            ->leftJoin('master_country', 'master_country.country_id', '=', 'users.country_id')
+            //->leftJoin('master_state', 'master_state.state_id', '=', 'users.state_id')
+            ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
+            ->select(
+                'users.*',
+                'master_city.city_name',
+                'master_country.country_name'
+            )
+            ->first();
+        $shop  = DB::table('shop_detail')->where('user_id', '=', $product->seller_id)->first();
 
         $service = DB::table('seller_service')
-                        ->where('seller_id', $product->seller_id)
-                        ->join('services','services.id','=','seller_service.service_id')->get();
+            ->where('seller_id', $product->seller_id)
+            ->join('services', 'services.id', '=', 'seller_service.service_id')->get();
 
         /*
         // Now fetch the group_id from interchange_product for this product combination
@@ -660,158 +818,188 @@ class HomeController extends Controller
                 ->get();
         }
         */
-        return view('web.product_detail',compact('product','user','shop','brand','model','category','subcategory','country','service','city'));
+        return view('web.product_detail', compact('product', 'user', 'shop', 'brand', 'model', 'category', 'subcategory', 'country', 'service', 'city'));
     }
     public function productListOld(Request $request)
     {
         //This is for ajax function to show product list as per filters
 
-        $brand=DB::table('brand')->where('is_active',1)->where('is_deleted',0)->get();
-        $category=DB::table('category')->where('is_active',1)->where('is_deleted',0)->get();
+        $brand = DB::table('brand')->where('is_active', 1)->where('is_deleted', 0)->get();
+        $category = DB::table('category')->where('is_active', 1)->where('is_deleted', 0)->get();
 
         $models = DB::table('make_model')
-                ->where('is_active', 1)
-                ->where('is_deleted', 0)
-                ->when($request->brand_id, fn($q) => $q->where('brand_id', $request->brand_id))
-                ->get();
+            ->where('is_active', 1)
+            ->where('is_deleted', 0)
+            ->when($request->brand_id, fn($q) => $q->where('brand_id', $request->brand_id))
+            ->get();
 
         $generation = DB::table('generation_year')
-                ->where('is_deleted', 0)
-                ->when($request->model_id, fn($q) => $q->where('model_id', $request->model_id))
-                ->get();
+            ->where('is_deleted', 0)
+            ->when($request->model_id, fn($q) => $q->where('model_id', $request->model_id))
+            ->get();
 
         $subcategory = DB::table('subcategory')
-                ->where('is_active', 1)
-                ->where('is_deleted', 0)
-                ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
-                ->get();
+            ->where('is_active', 1)
+            ->where('is_deleted', 0)
+            ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
+            ->get();
 
 
         $query = Product::query()
-                        ->Join('users', 'users.id', '=', 'product.seller_id')
-                        ->leftJoin('master_country', 'master_country.country_id', '=', 'users.country_id')
-                        ->leftJoin('master_state', 'master_state.state_id', '=', 'users.state_id')
-                        ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
+            ->Join('users', 'users.id', '=', 'product.seller_id')
+            ->leftJoin('master_country', 'master_country.country_id', '=', 'users.country_id')
+            ->leftJoin('master_state', 'master_state.state_id', '=', 'users.state_id')
+            ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
 
-                        ->leftJoin('brand', 'brand.id', '=', 'product.brand_id')
-                        ->leftJoin('make_model', 'make_model.id', '=', 'product.model_id')
-                        ->leftJoin('category', 'category.id', '=', 'product.category_id')
-                        ->leftJoin('subcategory', 'subcategory.id', '=', 'product.subcategory_id')
-                        ->leftJoin('product_img', 'product_img.product_id', '=', 'product.id')
-                        ->leftJoin('generation_year', 'generation_year.id', '=', 'product.generation_id')
-                        ->where('product.is_deleted', 0)
-                        ->where('product.is_active', 1);
+            ->leftJoin('brand', 'brand.id', '=', 'product.brand_id')
+            ->leftJoin('make_model', 'make_model.id', '=', 'product.model_id')
+            ->leftJoin('category', 'category.id', '=', 'product.category_id')
+            ->leftJoin('subcategory', 'subcategory.id', '=', 'product.subcategory_id')
+            ->leftJoin('product_img', 'product_img.product_id', '=', 'product.id')
+            ->leftJoin('generation_year', 'generation_year.id', '=', 'product.generation_id')
+            ->where('product.is_deleted', 0)
+            ->where('product.is_active', 1);
 
         // Filters
-        if ($request->brand_id!='') {
+        if ($request->brand_id != '') {
             $query->where('product.brand_id', $request->brand_id);
         }
-        if ($request->model_id !='') {
+        if ($request->model_id != '') {
             $query->where('product.model_id', $request->model_id);
         }
-        if ($request->category_id!='') {
+        if ($request->category_id != '') {
             $query->where('product.category_id', $request->category_id);
         }
-        if ($request->subcategory_id!='') {
+        if ($request->subcategory_id != '') {
             $query->where('product.subcategory_id', $request->subcategory_id);
         }
-        if($request->sort!='')
-        {
-             $query->where('product.product_type', $request->sort);
+        if ($request->sort != '') {
+            $query->where('product.product_type', $request->sort);
         }
         $query->distinct('product.id');
 
         // Important: select necessary columns only, avoid ambiguous column names
         $query->select(
-                    'product.id','product_img.product_image',
-                    'brand.brand_name as brand_name',
-                    'make_model.model_name as model_name',
-                    'category.category_name as category_name',
-                    'subcategory.subcat_name as subcategory_name',
-                    'product.is_active','product.product_type','product.product_price','product.seller_id',
-                    'users.first_name','users.last_name','master_city.city_name','master_country.country_name','master_state.state_name',
-                    'generation_year.start_year','generation_year.end_year','users.mobile'
-                );
+            'product.id',
+            'product_img.product_image',
+            'brand.brand_name as brand_name',
+            'make_model.model_name as model_name',
+            'category.category_name as category_name',
+            'subcategory.subcat_name as subcategory_name',
+            'product.is_active',
+            'product.product_type',
+            'product.product_price',
+            'product.seller_id',
+            'users.first_name',
+            'users.last_name',
+            'master_city.city_name',
+            'master_country.country_name',
+            'master_state.state_name',
+            'generation_year.start_year',
+            'generation_year.end_year',
+            'users.mobile'
+        );
         $products = $query->inRandomOrder()->paginate(9);
 
         if ($request->ajax()) {
             return view('web.partial_product_list', compact('products'))->render();
         }
-        return view('web.listing',compact('products','brand','category','models','subcategory','generation'));
+        return view('web.listing', compact('products', 'brand', 'category', 'models', 'subcategory', 'generation'));
     }
-    public function shopDetail(Request $request,$city, $shop)
+
+
+    public function shopDetail(Request $request, $city, $shop)
     {
         //This function is for show shop detail
-       $locale = App::getLocale();
+        $locale = App::getLocale();
 
         $detail  = DB::table('users')
-                        ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
-                        ->leftJoin('shop_detail', 'shop_detail.user_id', '=', 'users.id')
-                        ->where('shop_detail.shop_name', '=' , $shop)
-                        ->where('master_city.city_name', '=' , $city)
-                        ->select('users.*')
-                        ->first();
-        if(!$detail)
-        {
-             return redirect()->back()->with('error', 'Shop not found.');
+            ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
+            ->leftJoin('shop_detail', 'shop_detail.user_id', '=', 'users.id')
+            ->where('shop_detail.shop_name', '=', $shop)
+            ->where('master_city.city_name', '=', $city)
+            ->select('users.*')
+            ->first();
+        if (!$detail) {
+            return redirect()->back()->with('error', 'Shop not found.');
         }
-        $id=$detail->id;
+        $id = $detail->id;
 
-        $brands=DB::table('brand')->where('is_active',1)->where('is_deleted',0)->get();
+        $brands = DB::table('brand')->where('is_active', 1)->where('is_deleted', 0)->get();
         $brand = $brands->map(function ($item) use ($locale) {
             $item->brand_name = $locale == 'ar' ? $item->ar_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'fr' ? $item->fr_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'ru' ? $item->ru_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'fa' ? $item->fa_brand_name : $item->brand_name;
+            $item->brand_name = $locale == 'ur' ? $item->ur_brand_name : $item->brand_name;
             return $item;
         });
 
-        $categorys=DB::table('category')->where('is_active',1)->where('is_deleted',0)->get();
+
+
+
+        $categorys = DB::table('category')->where('is_active', 1)->where('is_deleted', 0)->get();
         $category = $categorys->map(function ($item) use ($locale) {
             $item->category_name = $locale == 'ar' ? $item->ar_category_name : $item->category_name;
+            $item->category_name = $locale == 'fr' ? $item->fr_category_name : $item->category_name;
+            $item->category_name = $locale == 'ru' ? $item->ru_category_name : $item->category_name;
+            $item->category_name = $locale == 'fa' ? $item->fa_category_name : $item->category_name;
+            $item->category_name = $locale == 'ur' ? $item->ur_category_name : $item->category_name;
             return $item;
         });
 
         $models = DB::table('make_model')
-                ->where('is_active', 1)
-                ->where('is_deleted', 0)
-                ->when($request->brand_id, fn($q) => $q->where('brand_id', $request->brand_id))
-                ->get();
+            ->where('is_active', 1)
+            ->where('is_deleted', 0)
+            ->when($request->brand_id, fn($q) => $q->where('brand_id', $request->brand_id))
+            ->get();
         $model = $models->map(function ($item) use ($locale) {
             $item->model_name = $locale == 'ar' ? $item->ar_model_name : $item->model_name;
+            $item->model_name = $locale == 'fr' ? $item->fr_model_name : $item->model_name;
+            $item->model_name = $locale == 'ru' ? $item->ru_model_name : $item->model_name;
+            $item->model_name = $locale == 'fa' ? $item->fa_model_name : $item->model_name;
+            $item->model_name = $locale == 'ur' ? $item->ur_model_name : $item->model_name;
             return $item;
         });
 
         $subcategorys = DB::table('subcategory')
-                ->where('is_active', 1)
-                ->where('is_deleted', 0)
-                ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
-                ->get();
+            ->where('is_active', 1)
+            ->where('is_deleted', 0)
+            ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
+            ->get();
         $subcategory = $subcategorys->map(function ($item) use ($locale) {
             $item->subcat_name = $locale == 'ar' ? $item->ar_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'fr' ? $item->fr_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'ru' ? $item->ru_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'fa' ? $item->fa_subcat_name : $item->subcat_name;
+            $item->subcat_name = $locale == 'ur' ? $item->ur_subcat_name : $item->subcat_name;
             return $item;
         });
 
-        $make_year=DB::table('make_year')->where('is_active',1)->where('is_deleted',0)->orderby('id','desc')->get();
-        $country=DB::table('master_country')->get();
+        $make_year = DB::table('make_year')->where('is_active', 1)->where('is_deleted', 0)->orderby('id', 'desc')->get();
+        $country = DB::table('master_country')->get();
 
-        $citys=DB::table('master_city')->join('master_country','master_country.country_id','=','master_city.country_id')->where('master_country.country_status',1)->where('master_city.city_status',1)->get();
+        $citys = DB::table('master_city')->join('master_country', 'master_country.country_id', '=', 'master_city.country_id')->where('master_country.country_status', 1)->where('master_city.city_status', 1)->get();
         $city = $citys->map(function ($item) use ($locale) {
             $item->city_name = $locale == 'ar' ? $item->city_name_ar : $item->city_name;
             return $item;
         });
 
-        $user  = DB::table('users')->where('id', '=' , $id)
-                        ->leftJoin('master_country', 'master_country.country_id', '=', 'users.country_id')
-                        //->leftJoin('master_state', 'master_state.state_id', '=', 'users.state_id')
-                        ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
-                        ->select(
-                                'users.*',
-                                'master_city.city_name','master_country.country_name'
-                            )
-                        ->first();
-        $shop  = DB::table('shop_detail')->where('user_id', '=' , $id)->first();
+        $user  = DB::table('users')->where('id', '=', $id)
+            ->leftJoin('master_country', 'master_country.country_id', '=', 'users.country_id')
+            //->leftJoin('master_state', 'master_state.state_id', '=', 'users.state_id')
+            ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
+            ->select(
+                'users.*',
+                'master_city.city_name',
+                'master_country.country_name'
+            )
+            ->first();
+        $shop  = DB::table('shop_detail')->where('user_id', '=', $id)->first();
         $service = DB::table('seller_service')
-                        ->where('seller_id', $id)
-                        ->join('services','services.id','=','seller_service.service_id')->get();
-        $shop_url = url('/shop/').'/'.$user->city_name.'/'. $shop->shop_name;
+            ->where('seller_id', $id)
+            ->join('services', 'services.id', '=', 'seller_service.service_id')->get();
+        $shop_url = url('/shop/') . '/' . $user->city_name . '/' . $shop->shop_name;
 
         // $query = Product::query()
         //                 ->leftJoin('brand', 'brand.id', '=', 'product.brand_id')
@@ -839,20 +1027,21 @@ class HomeController extends Controller
         //         );
         // $products = $query->inRandomOrder()->paginate(9);
 
-        return view('web.shop_detail',compact('brand','model','category','subcategory','make_year','country','user','shop','city','service','shop_url'));
+        return view('web.shop_detail', compact('brand', 'model', 'category', 'subcategory', 'make_year', 'country', 'user', 'shop', 'city', 'service', 'shop_url'));
     }
     public function digitalCard($id)
     {
-        $user  = DB::table('users')->where('id', '=' , $id)
-                        ->leftJoin('master_country', 'master_country.country_id', '=', 'users.country_id')
-                        //->leftJoin('master_state', 'master_state.state_id', '=', 'users.state_id')
-                        ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
-                        ->select(
-                                'users.*',
-                                'master_city.city_name','master_country.country_name'
-                            )
-                        ->first();
-        $shop  = DB::table('shop_detail')->where('user_id', '=' , $id)->first();
+        $user  = DB::table('users')->where('id', '=', $id)
+            ->leftJoin('master_country', 'master_country.country_id', '=', 'users.country_id')
+            //->leftJoin('master_state', 'master_state.state_id', '=', 'users.state_id')
+            ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
+            ->select(
+                'users.*',
+                'master_city.city_name',
+                'master_country.country_name'
+            )
+            ->first();
+        $shop  = DB::table('shop_detail')->where('user_id', '=', $id)->first();
 
         $qrFile = public_path('uploads/qr_code/' . $shop->qr_code);
         $qrBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($qrFile));
@@ -890,7 +1079,7 @@ class HomeController extends Controller
     {
         //This function is for seller minipage
         $locale = App::getLocale();
-        $brands=DB::table('brand')->where('is_active',1)->where('is_deleted',0)->get();
+        $brands = DB::table('brand')->where('is_active', 1)->where('is_deleted', 0)->get();
         $brand = $brands->map(function ($item) use ($locale) {
             $item->brand_name = $locale == 'ar' ? $item->ar_brand_name : $item->brand_name;
             $item->brand_name = $locale == 'fr' ? $item->fr_brand_name : $item->brand_name;
@@ -900,7 +1089,7 @@ class HomeController extends Controller
             return $item;
         });
 
-        $categorys=DB::table('category')->where('is_active',1)->where('is_deleted',0)->get();
+        $categorys = DB::table('category')->where('is_active', 1)->where('is_deleted', 0)->get();
         $category = $categorys->map(function ($item) use ($locale) {
             $item->category_name = $locale == 'ar' ? $item->ar_category_name : $item->category_name;
             $item->category_name = $locale == 'fr' ? $item->fr_category_name : $item->category_name;
@@ -919,10 +1108,10 @@ class HomeController extends Controller
 
 
         $models = DB::table('make_model')
-                ->where('is_active', 1)
-                ->where('is_deleted', 0)
-                ->when($request->brand_id, fn($q) => $q->where('brand_id', $request->brand_id))
-                ->get();
+            ->where('is_active', 1)
+            ->where('is_deleted', 0)
+            ->when($request->brand_id, fn($q) => $q->where('brand_id', $request->brand_id))
+            ->get();
         $model = $models->map(function ($item) use ($locale) {
             $item->model_name = $locale == 'ar' ? $item->ar_model_name : $item->model_name;
             $item->model_name = $locale == 'fr' ? $item->fr_model_name : $item->model_name;
@@ -933,10 +1122,10 @@ class HomeController extends Controller
         });
 
         $subcategorys = DB::table('subcategory')
-                ->where('is_active', 1)
-                ->where('is_deleted', 0)
-                ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
-                ->get();
+            ->where('is_active', 1)
+            ->where('is_deleted', 0)
+            ->when($request->category_id, fn($q) => $q->where('category_id', $request->category_id))
+            ->get();
         $subcategory = $subcategorys->map(function ($item) use ($locale) {
             $item->subcat_name = $locale == 'ar' ? $item->ar_subcat_name : $item->subcat_name;
             $item->subcat_name = $locale == 'fr' ? $item->fr_subcat_name : $item->subcat_name;
@@ -946,36 +1135,37 @@ class HomeController extends Controller
             return $item;
         });
 
-        $make_year=DB::table('make_year')->where('is_active',1)->where('is_deleted',0)->orderby('id','desc')->get();
-        $country=DB::table('master_country')->get();
+        $make_year = DB::table('make_year')->where('is_active', 1)->where('is_deleted', 0)->orderby('id', 'desc')->get();
+        $country = DB::table('master_country')->get();
 
-        $citys=DB::table('master_city')->join('master_country','master_country.country_id','=','master_city.country_id')->where('master_country.country_status',1)->where('master_city.city_status',1)->get();
+        $citys = DB::table('master_city')->join('master_country', 'master_country.country_id', '=', 'master_city.country_id')->where('master_country.country_status', 1)->where('master_city.city_status', 1)->get();
         $city = $citys->map(function ($item) use ($locale) {
             $item->city_name = $locale == 'ar' ? $item->city_name_ar : $item->city_name;
             return $item;
         });
 
-        $user  = DB::table('users')->where('id', '=' , $id)
-                        ->leftJoin('master_country', 'master_country.country_id', '=', 'users.country_id')
-                        //->leftJoin('master_state', 'master_state.state_id', '=', 'users.state_id')
-                        ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
-                        ->select(
-                                'users.*',
-                                'master_city.city_name','master_country.country_name'
-                            )
-                        ->first();
-        $shop  = DB::table('shop_detail')->where('user_id', '=' , $id)->first();
+        $user  = DB::table('users')->where('id', '=', $id)
+            ->leftJoin('master_country', 'master_country.country_id', '=', 'users.country_id')
+            //->leftJoin('master_state', 'master_state.state_id', '=', 'users.state_id')
+            ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
+            ->select(
+                'users.*',
+                'master_city.city_name',
+                'master_country.country_name'
+            )
+            ->first();
+        $shop  = DB::table('shop_detail')->where('user_id', '=', $id)->first();
 
         $query = Product::query()
-                        ->leftJoin('brand', 'brand.id', '=', 'product.brand_id')
-                        ->leftJoin('make_model', 'make_model.id', '=', 'product.model_id')
-                        ->leftJoin('category', 'category.id', '=', 'product.category_id')
-                        ->leftJoin('subcategory', 'subcategory.id', '=', 'product.subcategory_id')
-                        ->leftJoin('product_img', 'product_img.product_id', '=', 'product.id')
-                        ->leftJoin('generation_year', 'generation_year.id', '=', 'product.generation_id')
-                        ->where('product.seller_id', $id)
-                        ->where('product.is_deleted', 0)
-                        ->where('product.is_active', 1);
+            ->leftJoin('brand', 'brand.id', '=', 'product.brand_id')
+            ->leftJoin('make_model', 'make_model.id', '=', 'product.model_id')
+            ->leftJoin('category', 'category.id', '=', 'product.category_id')
+            ->leftJoin('subcategory', 'subcategory.id', '=', 'product.subcategory_id')
+            ->leftJoin('product_img', 'product_img.product_id', '=', 'product.id')
+            ->leftJoin('generation_year', 'generation_year.id', '=', 'product.generation_id')
+            ->where('product.seller_id', $id)
+            ->where('product.is_deleted', 0)
+            ->where('product.is_active', 1);
 
 
         //$query->distinct('product.id');
@@ -992,25 +1182,75 @@ class HomeController extends Controller
             $query->where('product.subcategory_id', $request->subcategory_id);
         }
         // Important: select necessary columns only, avoid ambiguous column names
-        $query->select(
-                    'product.id','product.stock_number','product_img.product_image',
-                    DB::raw($locale == 'ar' ? 'brand.ar_brand_name as brand_name' : 'brand.brand_name as brand_name'),
-                    DB::raw($locale == 'ar' ? 'make_model.ar_model_name as model_name' : 'make_model.model_name as model_name'),
-                    DB::raw($locale == 'ar' ? 'category.ar_category_name as category_name' : 'category.category_name as category_name'),
-                    DB::raw($locale == 'ar' ? 'subcategory.ar_subcat_name as subcategory_name' : 'subcategory.subcat_name as subcategory_name'),
-                    'product.product_note',
-                    'product.is_active','product.product_type','product.product_price','product.seller_id','product.admin_product_id',
-                    'generation_year.start_year','generation_year.end_year'
-        );
+
+        // List of locales that have translation columns
+        $translatedLocales = ['ar', 'fr', 'ru', 'fa', 'ur'];
+        if (in_array($locale, $translatedLocales)) {
+            $brandCol       = $locale . '_brand_name';
+            $modelCol       = $locale . '_model_name';
+            $categoryCol    = $locale . '_category_name';
+            $subcategoryCol = $locale . '_subcat_name';
+
+            $query->select(
+                'product.id',
+                'product.stock_number',
+                'product_img.product_image',
+                DB::raw("COALESCE(brand.$brandCol, brand.brand_name) as brand_name"),
+                DB::raw("COALESCE(make_model.$modelCol, make_model.model_name) as model_name"),
+                DB::raw("COALESCE(category.$categoryCol, category.category_name) as category_name"),
+                DB::raw("COALESCE(subcategory.$subcategoryCol, subcategory.subcat_name) as subcategory_name"),
+                'product.product_note',
+                'product.is_active',
+                'product.product_type',
+                'product.product_price',
+                'product.seller_id',
+                'product.admin_product_id',
+                'generation_year.start_year',
+                'generation_year.end_year'
+            );
+        } else {
+            // Fallback to English/default
+            $query->select(
+                'product.id',
+                'product.stock_number',
+                'product_img.product_image',
+                'brand.brand_name as brand_name',
+                'make_model.model_name as model_name',
+                'category.category_name as category_name',
+                'subcategory.subcat_name as subcategory_name',
+                'product.product_note',
+                'product.is_active',
+                'product.product_type',
+                'product.product_price',
+                'product.seller_id',
+                'product.admin_product_id',
+                'generation_year.start_year',
+                'generation_year.end_year'
+            );
+        }
+
+
+
+        // $query->select(
+        //             'product.id','product.stock_number','product_img.product_image',
+        //             DB::raw($locale == 'ar' ? 'brand.ar_brand_name as brand_name' : 'brand.brand_name as brand_name'),
+        //             DB::raw($locale == 'ar' ? 'make_model.ar_model_name as model_name' : 'make_model.model_name as model_name'),
+        //             DB::raw($locale == 'ar' ? 'category.ar_category_name as category_name' : 'category.category_name as category_name'),
+        //             DB::raw($locale == 'ar' ? 'subcategory.ar_subcat_name as subcategory_name' : 'subcategory.subcat_name as subcategory_name'),
+
+        //             'product.product_note',
+        //             'product.is_active','product.product_type','product.product_price','product.seller_id','product.admin_product_id',
+        //             'generation_year.start_year','generation_year.end_year'
+        // );
 
         $products = $query->inRandomOrder()->paginate(9);
         $products->appends($request->except('page'));
         //echo "<pre>";print_r($products);die();
         $service = DB::table('seller_service')
-                        ->where('seller_id', $id)
-                        ->join('services','services.id','=','seller_service.service_id')->get();
+            ->where('seller_id', $id)
+            ->join('services', 'services.id', '=', 'seller_service.service_id')->get();
 
-        return view('web.seller_mini_page',compact('brand','model','category','subcategory','make_year','country','user','shop','products','service','city'));
+        return view('web.seller_mini_page', compact('brand', 'model', 'category', 'subcategory', 'make_year', 'country', 'user', 'shop', 'products', 'service', 'city'));
     }
 
     public function register(Request $request)
@@ -1023,7 +1263,7 @@ class HomeController extends Controller
             'mobile' => 'required',
             'role' => 'required',
         ]);
-/*
+        /*
         $useremail  = DB::table('users')->where('user_name', '=' , $request->user_name)->where('is_deleted', '=' , 0)->first();
 
         if(!empty($useremail))
@@ -1032,11 +1272,11 @@ class HomeController extends Controller
         }
 */
         $user = User::create([
-           // 'user_name' => $request->user_name,
-           // 'password' => Hash::make($request->password),
+            // 'user_name' => $request->user_name,
+            // 'password' => Hash::make($request->password),
             'first_name' => $request->last_name,
             //'last_name' => $request->last_name,
-            'country_code'=>$request->country_code,
+            'country_code' => $request->country_code,
             'mobile' => $request->mobile,
             'user_type' => $request->role === 'user' ? 1 : ($request->role === 'seller' ? 2 : null),
         ]);
@@ -1051,9 +1291,8 @@ class HomeController extends Controller
             ]);
 
             return redirect()->back()->with(['registration_success' => 'Registration successfull']);
-
         } else {
-         return redirect()->back()->with(['error' => 'Something went wrong']);
+            return redirect()->back()->with(['error' => 'Something went wrong']);
         }
     }
 
@@ -1068,7 +1307,7 @@ class HomeController extends Controller
 
         $link = route('verify.email', ['id' => $user->id, 'token' => $token]);
 
-        $data = ['link' => $link,'name'=>$name];
+        $data = ['link' => $link, 'name' => $name];
         $blade = 'web.emails.registration_email';
         $subject = 'Verify Your Email';
 
@@ -1080,8 +1319,8 @@ class HomeController extends Controller
     public function verifyEmail($id, $token)
     {
         $user = User::where('id', $id)
-                    ->where('verification_token', $token)
-                    ->first();
+            ->where('verification_token', $token)
+            ->first();
 
         if (!$user) {
             return redirect()->route('signIn')->with('error', 'Invalid verification link.');
@@ -1099,8 +1338,8 @@ class HomeController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-           'user_name' => 'required',
-           'password' => 'required',
+            'user_name' => 'required',
+            'password' => 'required',
         ]);
         $credentials = $request->only('user_name', 'password');
         $credentials['user_status'] = 1;
@@ -1109,20 +1348,18 @@ class HomeController extends Controller
             Session::regenerate();
             $user = Auth::user();
 
-            if($user->user_status===1)
-            {
+            if ($user->user_status === 1) {
                 if ($user->user_type === 1) {
                     return redirect()->route('user.dashboard');
                 } elseif ($user->user_type === 2) {
                     return redirect()->route('seller.dashboard');
-                }else {
-                return redirect()->back()->with(['error' => 'Something went wrong']);
+                } else {
+                    return redirect()->back()->with(['error' => 'Something went wrong']);
                 }
-            }
-            else{
+            } else {
                 return redirect()->back()->with(['error' => 'Account not activated']);
             }
-        }else {
+        } else {
             return redirect()->back()->with(['error' => 'Invalid credentials or inactive account']);
         }
     }
@@ -1137,123 +1374,123 @@ class HomeController extends Controller
     {
         $locale = App::getLocale();
         $policya = DB::table('policy')
-                ->where('policy_type', 7)
-                ->where('is_deleted', 0)
-                ->first();
+            ->where('policy_type', 7)
+            ->where('is_deleted', 0)
+            ->first();
 
         if ($policya) {
             $policya->policy_content = $locale === 'ar' ? $policya->policy_content_ar : $policya->policy_content;
         }
-        return view('web.privacy_policy',compact('policya'));
+        return view('web.privacy_policy', compact('policya'));
     }
     public function getMatrix()
     {
         $locale = App::getLocale();
         $policya = DB::table('policy')
-                ->where('policy_type', 8)
-                ->where('is_deleted', 0)
-                ->first();
+            ->where('policy_type', 8)
+            ->where('is_deleted', 0)
+            ->first();
 
         if ($policya) {
             $policya->policy_content = $locale === 'ar' ? $policya->policy_content_ar : $policya->policy_content;
         }
-        return view('web.privacy_policy',compact('policya'));
+        return view('web.privacy_policy', compact('policya'));
     }
     public function getLayer()
     {
         $locale = App::getLocale();
         $policya = DB::table('policy')
-                ->where('policy_type', 9)
-                ->where('is_deleted', 0)
-                ->first();
+            ->where('policy_type', 9)
+            ->where('is_deleted', 0)
+            ->first();
 
         if ($policya) {
             $policya->policy_content = $locale === 'ar' ? $policya->policy_content_ar : $policya->policy_content;
         }
-        return view('web.privacy_policy',compact('policya'));
+        return view('web.privacy_policy', compact('policya'));
     }
     public function getPrivacyPolicy()
     {
         //This funcion is for getting the privacy policy
         $locale = App::getLocale();
         $policya = DB::table('policy')
-                ->where('policy_type', 1)
-                ->where('is_deleted', 0)
-                ->first();
+            ->where('policy_type', 1)
+            ->where('is_deleted', 0)
+            ->first();
 
         if ($policya) {
             $policya->policy_content = $locale === 'ar' ? $policya->policy_content_ar : $policya->policy_content;
         }
-        return view('web.privacy_policy',compact('policya'));
+        return view('web.privacy_policy', compact('policya'));
     }
     public function getTermsConditions()
     {
         //This function is for getting the terms conditions
         $locale = App::getLocale();
         $policya = DB::table('policy')
-                ->where('policy_type', 2)
-                ->where('is_deleted', 0)
-                ->first();
+            ->where('policy_type', 2)
+            ->where('is_deleted', 0)
+            ->first();
 
         if ($policya) {
             $policya->policy_content = $locale === 'ar' ? $policya->policy_content_ar : $policya->policy_content;
         }
-        return view('web.privacy_policy',compact('policya'));
+        return view('web.privacy_policy', compact('policya'));
     }
     public function aboutUs()
     {
         //This function is for about us content
         $locale = App::getLocale();
         $policya = DB::table('policy')
-                ->where('policy_type', 3)
-                ->where('is_deleted', 0)
-                ->first();
+            ->where('policy_type', 3)
+            ->where('is_deleted', 0)
+            ->first();
 
         if ($policya) {
             $policya->policy_content = $locale === 'ar' ? $policya->policy_content_ar : $policya->policy_content;
         }
-        return view('web.privacy_policy',compact('policya'));
+        return view('web.privacy_policy', compact('policya'));
     }
     public function contact()
     {
         //This function is for contact information
         $locale = App::getLocale();
         $policya = DB::table('policy')
-                ->where('policy_type', 5)
-                ->where('is_deleted', 0)
-                ->first();
+            ->where('policy_type', 5)
+            ->where('is_deleted', 0)
+            ->first();
 
         if ($policya) {
             $policya->policy_content = $locale === 'ar' ? $policya->policy_content_ar : $policya->policy_content;
         }
-        return view('web.privacy_policy',compact('policya'));
+        return view('web.privacy_policy', compact('policya'));
     }
     public function howWorks()
     {
         //This function is for how it works
         $locale = App::getLocale();
         $policya = DB::table('policy')
-                ->where('policy_type', 6)
-                ->where('is_deleted', 0)
-                ->first();
+            ->where('policy_type', 6)
+            ->where('is_deleted', 0)
+            ->first();
 
         if ($policya) {
             $policya->policy_content = $locale === 'ar' ? $policya->policy_content_ar : $policya->policy_content;
         }
-        return view('web.privacy_policy',compact('policya'));
+        return view('web.privacy_policy', compact('policya'));
     }
     public function getReference()
     {
         //This function is for how it works
         $locale = App::getLocale();
         $policya = DB::table('policy')
-                ->where('policy_type', 10)
-                ->where('is_deleted', 0)
-                ->first();
+            ->where('policy_type', 10)
+            ->where('is_deleted', 0)
+            ->first();
 
         if ($policya) {
             $policya->policy_content = $locale === 'ar' ? $policya->policy_content_ar : $policya->policy_content;
         }
-        return view('web.privacy_policy',compact('policya'));
+        return view('web.privacy_policy', compact('policya'));
     }
 }
