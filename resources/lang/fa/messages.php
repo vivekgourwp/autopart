@@ -18,6 +18,13 @@ return [
     'MODEL' => 'مدل',
     'PART TYPE' => 'نوع پرزه',
     'PART' => 'پرزه',
+
+    'ALL_YEAR'      => 'همه سال‌ها',
+    'ALL_MAKE'      => 'همه سازندگان',
+    'ALL_MODEL'     => 'همه مدل‌ها',
+    'ALL_PART_TYPE' => 'همه انواع قطعات',
+    'ALL_PART'      => 'همه قطعات',
+
     'GENERATION' => 'سال',
     'ALL Country' => 'تمام کشورها',
     'ALL Location' => 'موقعیت',
@@ -100,7 +107,9 @@ return [
     'phone_num_2' => 'شماره تلفن ۲',
     'whatsapp_1' => 'شماره واتس‌اپ ۱',
     'whatsapp_2' => 'شماره واتس‌اپ ۲',
-    'address1_ar' => 'آدرس ۱ (عربی)',
-    'address2_ar' => 'آدرس ۲ (عربی)',
+    'address1_ar' => 'آدرس کسب‌وکار 1 (دری)',
+    'address2_ar' => 'آدرس کسب‌وکار 2 (دری)',
     'shop_name_ar' => 'نام نهاد (عربی)',
+    'latitude' => 'عرض جغرافیایی',
+    'longitude' => 'طول جغرافیایی',
 ];

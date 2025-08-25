@@ -18,6 +18,13 @@ return [
     'MODEL' => 'ماڈل',
     'PART TYPE' => 'پرزہ کی قسم',
     'PART' => 'پرزہ',
+
+    'ALL_YEAR'      => 'تمام سال',
+    'ALL_MAKE'      => 'تمام بنانے والے',
+    'ALL_MODEL'     => 'تمام ماڈل',
+    'ALL_PART_TYPE' => 'تمام پرزوں کی اقسام',
+    'ALL_PART'      => 'تمام پرزے',
+
     'GENERATION' => 'سال',
     'ALL Country' => 'تمام ممالک',
     'ALL Location' => 'مقام',
@@ -100,7 +107,9 @@ return [
     'phone_num_2' => 'فون نمبر 2',
     'whatsapp_1' => 'واٹس ایپ نمبر 1',
     'whatsapp_2' => 'واٹس ایپ نمبر 2',
-    'address1_ar' => 'پتہ 1 (عربی)',
-    'address2_ar' => 'پتہ 2 (عربی)',
+    'address1_ar' => 'کاروباری پتہ 1 (اردو)',
+    'address2_ar' => 'کاروباری پتہ 2 (اردو)',
     'shop_name_ar' => 'ادارے کا نام (عربی)',
+    'latitude' => 'عرض بلد',
+    'longitude' => 'طول بلد',
 ];

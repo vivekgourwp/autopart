@@ -6,6 +6,8 @@
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
+
+
                     <?php
                     $first_name = $last_name = $email = $gender = $user_id = $zip_code = $address1 = $address2 = $user_name = $profile_image = '';
                     $country_id = $state_id = $city_id = $mobile = $mobile_2 = $whatsapp1 = $whatsapp2 = $latitude = $longitude = 0;
@@ -40,10 +42,16 @@
                         $shop_name_ar = $shop_detail->shop_name_ar ?? '';
                         $shop_logo = $shop_detail->shop_logo;
                         $shop_banner = $shop_detail->shop_banner;
-                        $about_shop = $shop_detail->about_shop;
+                        $about_shop = $shop_detail->about_shop ?? '';
+                        $about_shop_ar = $shop_detail->about_shop_ar ?? '';
+                        $about_shop_fr = $shop_detail->about_shop_fr ?? '';
+                        $about_shop_ru = $shop_detail->about_shop_ru ?? '';
+                        $about_shop_fa = $shop_detail->about_shop_fa ?? '';
+                        $about_shop_ur = $shop_detail->about_shop_ur ?? '';
                         $qr_code = $shop_detail->qr_code;
                     }
                     ?>
+
                     <div class="card">
                         <div class="card-body">
 
@@ -63,26 +71,26 @@
                                     {{-- <div class="form-group col-md-6">
                               <label for="exampleInputUsername1">{{__('messages.business_man')}}</label>
                               <input type="text" class="form-control form-control-sm" placeholder="{{__('messages.business_man')}}" aria-label="Username" name="first_name" value="{{$first_name}}">
-                            </div> --}}
-                                    {{-- <div class="form-group col-md-6">
-                              <label for="exampleInputUsername1">{{__('messages.last_name')}}</label>
-                              <input type="text" class="form-control form-control-sm" placeholder="{{__('messages.last_name')}}" aria-label="Username" name="last_name" value="{{$last_name}}" readonly>
-                            </div>
-                            --}}
+                                </div> --}}
+                                        {{-- <div class="form-group col-md-6">
+                                <label for="exampleInputUsername1">{{__('messages.last_name')}}</label>
+                                <input type="text" class="form-control form-control-sm" placeholder="{{__('messages.last_name')}}" aria-label="Username" name="last_name" value="{{$last_name}}" readonly>
+                                </div>
+                                --}}
 
-                                    {{-- <div class="form-group col-md-6">
-                              <label for="exampleInputEmail1">{{__('messages.email_id')}}</label>
-                              <input type="email" class="form-control form-control-sm" id="exampleInputEmail1" placeholder="{{__('messages.email_id')}}" name="email" value="{{$email}}"  >
-                            </div> --}}
+                                        {{-- <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1">{{__('messages.email_id')}}</label>
+                                <input type="email" class="form-control form-control-sm" id="exampleInputEmail1" placeholder="{{__('messages.email_id')}}" name="email" value="{{$email}}"  >
+                                </div> --}}
 
-                                    {{-- <div class="form-group col-md-6">
-                              <label for="exampleInputEmail1">{{__('messages.gender')}}</label>
-                              <select required class="form-select form-select-sm" id="exampleFormControlSelect3" name="gender">
-                                <option value="1" {{$gender==1?'selected':''}}>{{__('messages.male')}}</option>
-                                <option value="2" {{$gender==2?'selected':''}}>{{__('messages.female')}}</option>
-                                <option value="3" {{$gender==3?'selected':''}}>{{__('messages.other')}}</option>
-                              </select>
-                            </div> --}}
+                                        {{-- <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1">{{__('messages.gender')}}</label>
+                                <select required class="form-select form-select-sm" id="exampleFormControlSelect3" name="gender">
+                                    <option value="1" {{$gender==1?'selected':''}}>{{__('messages.male')}}</option>
+                                    <option value="2" {{$gender==2?'selected':''}}>{{__('messages.female')}}</option>
+                                    <option value="3" {{$gender==3?'selected':''}}>{{__('messages.other')}}</option>
+                                </select>
+                                </div> --}}
 
                                     <div class="form-group col-md-6">
                                         <label for="exampleInputEmail1">{{ __('messages.shop_name') }}</label>
@@ -103,27 +111,27 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="exampleInputEmail1">{{ __('messages.about_shop_ar') }}</label>
-                                        <textarea class="form-control form-control-sm short_bio" name="about_shop_ar" maxlength="300" id="short_bio2">{{ $about_shop }}</textarea>
+                                        <textarea class="form-control form-control-sm short_bio" name="about_shop_ar" maxlength="300" id="short_bio2">{{ $about_shop_ar }}</textarea>
                                         <small id="bioCounter2">300 characters remaining</small>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="exampleInputEmail1">{{ __('messages.about_shop_ru') }}</label>
-                                        <textarea class="form-control form-control-sm short_bio" name="about_shop_ru" maxlength="300" id="short_bio3">{{ $about_shop }}</textarea>
+                                        <textarea class="form-control form-control-sm short_bio" name="about_shop_ru" maxlength="300" id="short_bio3">{{ $about_shop_ru }}</textarea>
                                         <small id="bioCounter3">300 characters remaining</small>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="exampleInputEmail1">{{ __('messages.about_shop_fr') }}</label>
-                                        <textarea class="form-control form-control-sm short_bio" name="about_shop_fr" maxlength="300" id="short_bio4">{{ $about_shop }}</textarea>
+                                        <textarea class="form-control form-control-sm short_bio" name="about_shop_fr" maxlength="300" id="short_bio4">{{ $about_shop_fr }}</textarea>
                                         <small id="bioCounter4">300 characters remaining</small>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="exampleInputEmail1">{{ __('messages.about_shop_fa') }}</label>
-                                        <textarea class="form-control form-control-sm" name="about_shop_fa" maxlength="300" id="short_bio5">{{ $about_shop }}</textarea>
+                                        <textarea class="form-control form-control-sm" name="about_shop_fa" maxlength="300" id="short_bio5">{{ $about_shop_fa }}</textarea>
                                         <small id="bioCounter5">300 characters remaining</small>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="exampleInputEmail1">{{ __('messages.about_shop_ur') }}</label>
-                                        <textarea class="form-control form-control-sm short_bio" name="about_shop_ur" maxlength="300" id="short_bio6">{{ $about_shop }}</textarea>
+                                        <textarea class="form-control form-control-sm short_bio" name="about_shop_ur" maxlength="300" id="short_bio6">{{ $about_shop_ur }}</textarea>
                                         <small id="bioCounter6">300 characters remaining</small>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -173,6 +181,19 @@
                                     </div>
 
                                     <div class="form-group col-md-6">
+                                        <label for="exampleInputUsername1">{{ __('messages.address1_ar') }}</label>
+                                        <input type="text" class="form-control form-control-sm"
+                                            placeholder="{{ __('messages.address1_ar') }}" aria-label="Ussername"
+                                            name="address1_ar" value="{{ $address1_ar }}">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="exampleInputUsername1">{{ __('messages.address2_ar') }}</label>
+                                        <input type="text" class="form-control form-control-sm"
+                                            placeholder="{{ __('messages.address2_ar') }}" aria-label="Usedrname"
+                                            name="address2_ar" value="{{ $address2_ar }}">
+                                    </div>
+
+                                    <div class="form-group col-md-6">
                                         <label for="exampleInputEmail1">{{ __('messages.country') }}</label>
                                         <select class="form-select form-select-sm" id="country" name="country_id">
                                             <option value="">{{ __('messages.country') }}</option>
@@ -196,7 +217,7 @@
                                 @endforeach
                                 @endif
                               </select>
-                            </div> --}}
+                                </div> --}}
                                     <div class="form-group col-md-6">
                                         <label for="exampleInputEmail1">{{ __('messages.city') }}</label>
                                         <select class="form-select form-select-sm" id="city" name="city_id">
@@ -212,18 +233,7 @@
                                     </div>
 
 
-                                    {{-- <div class="form-group col-md-6">
-                                        <label for="exampleInputUsername1">{{ __('messages.address1_ar') }}</label>
-                                        <input type="text" class="form-control form-control-sm"
-                                            placeholder="{{ __('messages.address1_ar') }}" aria-label="Ussername"
-                                            name="address1_ar" value="{{ $address1_ar }}">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="exampleInputUsername1">{{ __('messages.address2_ar') }}</label>
-                                        <input type="text" class="form-control form-control-sm"
-                                            placeholder="{{ __('messages.address2_ar') }}" aria-label="Usedrname"
-                                            name="address2_ar" value="{{ $address2_ar }}">
-                                    </div> --}}
+
 
                                     {{-- <div class="form-group col-md-6">
                                         <label for="exampleInputUsername1">{{ __('messages.zip') }}</label>
@@ -238,28 +248,28 @@
                                   <img id="profileImagePreview" src="{{ !empty($profile_image) ? asset('public/uploads/profile_image/' . $profile_image) :  asset('public/admin_assets/images/faces/face28.jpg') }}"
                                       alt="Profile Preview" style="max-width: 150px; border: 1px solid #ddd; padding: 5px;">
                               </div>
-                            </div> --}}
+                                </div> --}}
 
                                 </div>
 
                                 <div class="row">
 
 
-                                    {{-- <div class="form-group col-md-6">
-                                        <label for="exampleInputEmail1">Latitude</label>
+                                    <div class="form-group col-md-6">
+                                        <label for="exampleInputEmail1">{{ __('messages.latitude') }}</label>
                                         <input type="text" class="form-control form-control-sm" maxlength="12"
                                             id="latitude" placeholder="22.7124976" name="latitude"
                                             value="{{ $latitude }}" pattern="^-?([1-8]?[0-9](\.\d+)?|90(\.0+)?)$"
                                             title="Enter a valid latitude between -90 and 90">
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="exampleInputEmail1">Longitude</label>
+                                        <label for="exampleInputEmail1">{{ __('messages.longitude') }}</label>
                                         <input type="text" class="form-control form-control-sm" maxlength="12"
                                             id="longitude" placeholder="75.8486807" name="longitude"
                                             value="{{ $longitude }}"
                                             pattern="^-?((1[0-7][0-9]|[1-9]?[0-9])(\.\d+)?|180(\.0+)?)$"
                                             title="Enter a valid longitude between -180 and 180">
-                                    </div> --}}
+                                    </div>
 
                                     <div class="form-group col-md-6">
                                         <label for="exampleInputEmail1">{{ __('messages.shop_banner') }}</label>
@@ -298,17 +308,17 @@
                                     </div> --}}
                                     {{-- <div class="form-group col-md-6">
                               <img src="{{ asset('/public/uploads/business_card/' . $shop_detail->digital_card) }}" alt="Parts Rack" class="img-fluid mb-3" style="width: 400px;"/>
-                            </div> --}}
-                                    {{-- <div class="form-group col-md-6">
-                              <label for="exampleInputEmail1">{{__('messages.services')}}</label>
-                              <ul>
-                                @foreach ($services as $service)
-                                  <li>
-                                    <input type="checkbox" name="service_id[]" value="{{$service->id}}" {{in_array($service->id, $seller_service_ids)?'checked':''}}> {{$service->service_icon}} &nbsp; {{$service->service_name}}
-                                  </li>
-                                @endforeach
-                              </ul>
-                            </div> --}}
+                                </div> --}}
+                                        {{-- <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1">{{__('messages.services')}}</label>
+                                <ul>
+                                    @foreach ($services as $service)
+                                    <li>
+                                        <input type="checkbox" name="service_id[]" value="{{$service->id}}" {{in_array($service->id, $seller_service_ids)?'checked':''}}> {{$service->service_icon}} &nbsp; {{$service->service_name}}
+                                    </li>
+                                    @endforeach
+                                </ul>
+                                </div> --}}
                                     <div class="form-group col-md-6">
                                         <input type="hidden" id="current_user_id" value="{{ auth()->user()->id }}">
                                         <label for="examspleInputEmail1">{{ __('messages.username') }}</label>

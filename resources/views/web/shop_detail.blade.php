@@ -149,15 +149,15 @@ button.down-card-btn {
                     <input type="hidden" name="user_latitude" id="user_latitude">
                     <input type="hidden" name="user_longitude" id="user_longitude">
 
-                    <h6 class="text-uppercase font-weight-bold">{{__('messages.filter_head1')}}</h6>
+                    <h6 class="text-uppercase font-weight-bold">{{ $shop->shop_name }}</h6>
                     <select class="form-control mb-2 custom-select select2" name="year" id="year">
-                        <option value="">{{__('messages.YEAR')}}</option>
+                        <option value="">{{__('messages.ALL_YEAR')}}</option>
                         @for ($year = date('Y'); $year >= 1960; $year--)
                             <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}</option>
                         @endfor
                     </select>
                     <select class="form-control mb-2 custom-select select2" id="brand" name="brand_id">
-                        <option value="">{{__('messages.MAKE')}}</option>
+                        <option value="">{{__('messages.ALL_MAKE')}}</option>
                             @if($brand)
                             @foreach($brand as $brands)
                                 <option value="{{$brands->id}}" {{ request('brand_id') == $brands->id ? 'selected' : '' }}>{{$brands->brand_name}}</option>
@@ -165,7 +165,7 @@ button.down-card-btn {
                             @endif
                     </select>
                     <select class="form-control mb-2 custom-select select2" id="model" name="model_id">
-                        <option value="">{{__('messages.MODEL')}}</option>
+                        <option value="">{{__('messages.ALL_MODEL')}}</option>
                             @if($model)
                             @foreach($model as $models)
                                 <option value="{{$models->id}}" {{ request('model_id') == $models->id ? 'selected' : '' }}>{{$models->model_name}}</option>
@@ -173,7 +173,7 @@ button.down-card-btn {
                             @endif
                     </select>
                     <select class="form-control mb-2 custom-select select2"  id="category" name="category_id">
-                        <option value="">{{__('messages.PART TYPE')}}</option>
+                        <option value="">{{__('messages.ALL_PART TYPE')}}</option>
                         @if($category)
                         @foreach($category as $categorys)
                             <option value="{{$categorys->id}}" {{ request('category_id') == $categorys->id ? 'selected' : '' }}>{{$categorys->category_name}}</option>
@@ -181,7 +181,7 @@ button.down-card-btn {
                         @endif
                     </select>
                     <select class="form-control mb-2 custom-select select2"  id="subcategory" name="subcategory_id">
-                        <option value="">{{__('messages.PART')}}</option>
+                        <option value="">{{__('messages.ALL_PART')}}</option>
                         @if($subcategory)
                         @foreach($subcategory as $subcategorys)
                             <option value="{{$subcategorys->id}}" {{ request('subcategory_id') == $subcategorys->id ? 'selected' : '' }}>{{$subcategorys->subcat_name}}</option>
@@ -196,14 +196,14 @@ button.down-card-btn {
                                     @endforeach
                                 @endif
                     </select> -->
-                    <select class="form-control mb-2 custom-select select2"  id="city" name="city_id">
+                    {{-- <select class="form-control mb-2 custom-select select2"  id="city" name="city_id">
                         <option value="">{{__('messages.sector')}}</option>
                             @if($city)
                                 @foreach($city as $citys)
                                     <option value="{{ $citys->city_id }}" {{ request('city_id') == $citys->city_id ? 'selected' : '' }}>{{ $citys->city_name }}</option>
                                 @endforeach
                             @endif
-                    </select>
+                    </select> --}}
                     <button class="btn btn-dark btn-block shop-search-btn">{{__('messages.search')}}</button>
                     <!-- <button class="btn btn-outline-secondary btn-block mt-2 shop-reset-btn">RESET</button> -->
                     </form>
@@ -222,7 +222,7 @@ button.down-card-btn {
                     {{$shop->about_shop}}
                 </p>
                 <!-- <a href="#" class="read-more-add">READ MORE</a> -->
-            
+
             </div>
 
             <!-- Contact Info -->
@@ -235,7 +235,7 @@ button.down-card-btn {
            <div class="card bar-code-add" id="business_card" style="width: 308px; background: white; padding: 20px; border-radius: 0px;">
                 <h1>{{ $shop->shop_name }}</h1>
                 <div class="location">{{ $user->city_name }}, {{ $user->country_name }}</div>
-        
+
                 <div class="info">
                     <div class="xyz">
                         <div>📞 {{ $user->mobile }}</div>
@@ -248,10 +248,10 @@ button.down-card-btn {
                     </div>
                     <div class="bar-code-img-add">
                         <img src="{{ asset('/public/uploads/qr_code/'. $shop->qr_code) }}" alt="Parts Rack" class="img-fluid mb-3" />
-                        
+
                     </div>
                 </div>
-        
+
                 <div class="icons">
                     <div class="footer">ArabCarPart</div>
                     <div class="new-add-right-icon">
@@ -276,9 +276,9 @@ button.down-card-btn {
 
 
 
-                
-                
-                
+
+
+
                 <div class="info-text">
                     <p class="mb-1 font-weight-bold address-text-add">{{$user->address1.' , '.$user->address2.' , '.$user->zip_code.' , '.$user->city_name.' , '.$user->country_name}}</p>
 
@@ -287,13 +287,19 @@ button.down-card-btn {
                     <div class="social-icons mt-2">
                         <a href="https://wa.me/{{$user->mobile}}" target="_blank"><i class="bi bi-whatsapp"></i></a>
                         <a href="tel:+{{$user->mobile}}"><i class="bi bi-telephone-fill"></i></a>
-                        <a href="#"><i class="bi bi-geo-alt-fill"></i></a>
+                        {{-- <a href="#"><i class="bi bi-geo-alt-fill"></i></a> --}}
+
+                        <button style="border:none" onclick="openMap('{{ $user->user_lat }}','{{ $user->user_long }}', event)">
+                                                <i class="bi bi-geo-alt"></i>
+                                            </button>
+
+
                         <button onclick="downloadCard()" class="down-card-btn">Download</button>
                     </div>
                 </div>
             </div>
 
-            
+
         </div>
     </div>
 </div>
@@ -321,6 +327,18 @@ button.down-card-btn {
             // allowClear: true
         });
     });
+
+        // open map using lat, long code
+        function openMap(latitude, longitude, event) {
+            event.stopPropagation();
+            event.preventDefault();
+
+            //alert("Latitude: " + latitude + " | Longitude: " + longitude);
+            let url = `https://www.google.com/maps?q=${latitude},${longitude}`;
+            window.open(url, '_blank');
+        }
+
+
 </script>
 <script>
     /*
@@ -361,7 +379,7 @@ button.down-card-btn {
 */
     $(document).ready(function () {
     $(document).on('change', '#brand', function () {
-       
+
         var cid = this.value;   //let cid = $(this).val(); we cal also write this.
         $.ajax({
         url: "{{url('/admin/getModel')}}",
@@ -372,7 +390,7 @@ button.down-card-btn {
             '_token':'{{csrf_token()}}'
         },
         success: function(result) {
-            $('#model').html('<option value="">{{ __("messages.MODEL") }}</option>');
+            $('#model').html('<option value="">{{ __("messages.ALL_MODEL") }}</option>');
             $.each(result.city, function(key, value) {
             $('#model').append('<option value="' +value.id+ '">' +value.model_name+ '</option>');
             });
@@ -418,7 +436,7 @@ button.down-card-btn {
             },
             success: function(result) {
                 console.log(result);
-                $('#subcategory').html('<option value="">{{ __("messages.PART") }}</option>');
+                $('#subcategory').html('<option value="">{{ __("messages.ALL_PART") }}</option>');
                 $.each(result.subcat, function(key, value) {
                 $('#subcategory').append('<option value="' +value.id+ '">' +value.subcat_name+ '</option>')
                 });

@@ -28,10 +28,10 @@
                             <tr>
                               <th><input type="checkbox" id="selectAll"></th>
                               <th> Sr no </th>
-                              <th> Representative </th>
+                              <th> Business Name </th>
                               {{--<th> Last name </th>--}}
-                              <th> Email </th>
-                              <th> Country </th>
+                              <th> Phone Number 1 </th>
+                              <th> City </th>
                               <th> Status</th>
                               <th> Action</th>
                             </tr>
@@ -43,10 +43,10 @@
                             <tr>
                               <td><input type="checkbox" name="ids[]" value="{{ $list->id }}" class="selectBox"></td>
                               <td>{{$i}}</td>
-                              <td> {{$list->first_name}} </td>
+                              <td> {{$list->shop_name}} </td>
                               {{--<td>{{$list->last_name}} </td>--}}
-                              <td> {{$list->email}}</td>
-                              <td> {{$list->country_name}} </td>
+                              <td> {{$list->mobile}}</td>
+                              <td> {{$list->city_name}} </td>
                               <td><select class="user_status form-select form-select-sm" user="{{$list->id}}">
                                   <option value="0" {{$list->user_status==0?'selected':''}}>Pending</option>
                                   <option value="1" {{$list->user_status==1?'selected':''}}>Approved</option>

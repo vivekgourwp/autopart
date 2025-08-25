@@ -18,6 +18,13 @@ return [
     'MODEL' => 'МОДЕЛЬ',
     'PART TYPE' => 'ТИП ДЕТАЛИ',
     'PART' => 'ДЕТАЛЬ',
+
+    'ALL_YEAR'      => 'ВСЕ ГОДЫ',
+    'ALL_MAKE'      => 'ВСЕ ПРОИЗВОДИТЕЛИ',
+    'ALL_MODEL'     => 'ВСЕ МОДЕЛИ',
+    'ALL_PART_TYPE' => 'ВСЕ ТИПЫ ЗАПЧАСТЕЙ',
+    'ALL_PART'      => 'ВСЕ ЗАПЧАСТИ',
+
     'GENERATION' => 'ГОД',
     'ALL Country' => 'ВСЕ СТРАНЫ',
     'ALL Location' => 'МЕСТОПОЛОЖЕНИЕ',
@@ -100,7 +107,9 @@ return [
     'phone_num_2' => 'ТЕЛЕФОН 2',
     'whatsapp_1' => 'WHATSAPP 1',
     'whatsapp_2' => 'WHATSAPP 2',
-    'address1_ar' => 'АДРЕС 1 (АРАБСКИЙ)',
-    'address2_ar' => 'АДРЕС 2 (АРАБСКИЙ)',
+    'address1_ar' => 'АДРЕС БИЗНЕСА 1 (РУССКИЙ)',
+    'address2_ar' => 'АДРЕС БИЗНЕСА 2 (РУССКИЙ)',
     'shop_name_ar' => 'НАЗВАНИЕ ОРГАНИЗАЦИИ (АРАБСКИЙ)',
+    'latitude' => 'ШИРОТА',
+    'longitude' => 'ДОЛГОТА',
 ];

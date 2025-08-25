@@ -18,6 +18,13 @@ return [
     'MODEL' => 'MODÈLE',
     'PART TYPE' => 'TYPE DE PIÈCE',
     'PART' => 'PIÈCE',
+
+    'ALL_YEAR'      => 'TOUTES LES ANNÉES',
+    'ALL_MAKE'      => 'TOUTES LES MARQUES',
+    'ALL_MODEL'     => 'TOUS LES MODÈLES',
+    'ALL_PART_TYPE' => 'TOUS LES TYPES DE PIÈCES',
+    'ALL_PART'      => 'TOUTES LES PIÈCES',
+
     'GENERATION' => 'ANNÉE',
     'ALL Country' => 'TOUS PAYS',
     'ALL Location' => 'EMPLACEMENT',
@@ -100,7 +107,9 @@ return [
     'phone_num_2' => 'NUMÉRO DE TÉLÉPHONE 2',
     'whatsapp_1' => 'NUMÉRO WHATSAPP 1',
     'whatsapp_2' => 'NUMÉRO WHATSAPP 2',
-    'address1_ar' => 'ADRESSE 1 (ARABE)',
-    'address2_ar' => 'ADRESSE 2 (ARABE)',
+    'address1_ar' => 'ADRESSE PROFESSIONNELLE 1 (FRANÇAIS)',
+    'address2_ar' => 'ADRESSE PROFESSIONNELLE 2 (FRANÇAIS)',
     'shop_name_ar' => 'NOM DE L’ENTITÉ (ARABE)',
+    'latitude' => 'LATITUDE',
+    'longitude' => 'LONGITUDE',
 ];

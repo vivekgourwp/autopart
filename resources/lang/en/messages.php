@@ -18,6 +18,14 @@ return [
     'MODEL'=>'MODEL',
     'PART TYPE'=>'PART TYPE',
     'PART'=>'PART',
+
+    'ALL_YEAR' => 'ALL YEAR',
+    'ALL_MAKE' => 'ALL MAKE',
+    'ALL_MODEL' => 'ALL MODEL',
+    'ALL_PART_TYPE' => 'ALL PART TYPE',
+    'ALL_PART' => 'ALL PART',
+
+
     'GENERATION'=>'YEAR',
     'ALL Country'=>'ALL Country',
     'ALL Location'=>'LOCATION',
@@ -95,12 +103,15 @@ return [
     'entity_name'=>'ENTITY NAME',
     'entity_represet'=>'ENTITY REPRESENTATIVE',
     'business_man'=>'BUSINESS MANAGER',
+    'phone'=>'PHONE@',
     'phone_num_1'=>'PHONE NUMBER 1',
     'phone_num_2'=>'PHONE NUMBER 2',
     'whatsapp_1'=>'WHATSAPP NUMBER 1',
     'whatsapp_2'=>'WHATSAPP NUMBER 2',
-    'address1_ar'=>'ADDRESS 1 (ARABIC)',
-    'address2_ar'=>'ADDRESS 2 (ARABIC)',
+    'address1_ar'=>'BUSINESS ADDRESS LINE 1 (ARABIC)',
+    'address2_ar'=>'BUSINESS ADDRESS LINE 2 (ARABIC)',
     'shop_name_ar'=>'BUSINESS NAME ARABIC',
+    'latitude' => 'LATITUDE',
+    'longitude' => 'LONGITUDE'
 ];
 ?>

@@ -30,20 +30,18 @@ class UserManagementController extends Controller
 {
     public function __construct()
     {
-        if(Auth::guard("admin")->user())
-        {
+        if (Auth::guard("admin")->user()) {
             $user = Auth::guard("admin")->user();
-        }
-        else{
-                Auth::guard("admin")->logout();
-                return redirect()->route("admin.login")->with("warning", "You are not authorized as admin.");
+        } else {
+            Auth::guard("admin")->logout();
+            return redirect()->route("admin.login")->with("warning", "You are not authorized as admin.");
         }
     }
-    public function generateQrCode($id,$shop)
+    public function generateQrCode($id, $shop)
     {
         $text = route('sellerMiniPage', ['id' => $id]);
-        
-        $fileName = 'qr_'.$shop.'_' . time() . '.png';
+
+        $fileName = 'qr_' . $shop . '_' . time() . '.png';
         $filePath = public_path('uploads/qr_code/' . $fileName);
 
         // Ensure directory exists
@@ -61,7 +59,7 @@ class UserManagementController extends Controller
         file_put_contents($filePath, $result->getString());
 
         $shop = ShopDetail::where('user_id', $id)->first();
-        $shop->qr_code=$fileName;
+        $shop->qr_code = $fileName;
         $shop->save();
 
         return response()->json([
@@ -99,67 +97,59 @@ class UserManagementController extends Controller
     }
     public function userList()
     {
-        $users=DB::table('users')
-                    ->leftjoin('master_country','master_country.country_id','=','users.country_id')
-                    ->where('user_type',1)
-                    ->where('is_deleted',0)
-                    ->select('users.*','master_country.country_name')
-                    ->orderBy('id', 'DESC')
-                    ->paginate(20);
-        return view('admin.user_list',compact('users'));
+        $users = DB::table('users')
+            ->leftjoin('master_country', 'master_country.country_id', '=', 'users.country_id')
+            ->where('user_type', 1)
+            ->where('is_deleted', 0)
+            ->select('users.*', 'master_country.country_name')
+            ->orderBy('id', 'DESC')
+            ->paginate(20);
+        return view('admin.user_list', compact('users'));
     }
     public function updateUserStatus(Request $request)
     {
         $user = User::find($request->user);
-        $user->user_status=$request->status;
+        $user->user_status = $request->status;
         $user->save();
     }
     public function deleteUser(Request $request)
     {
         //This function is for ajax to delete the user
         $user = User::find($request->user);
-        $user->is_deleted=1;
+        $user->is_deleted = 1;
         $user->save();
     }
-    public function addUser(Request $request,$id=null)
+    public function addUser(Request $request, $id = null)
     {
-        $country=DB::table('master_country')->where('country_status',1)->get();
-        $user_detail=$state=$city="";
-        if($id!=null)
-        {
-            $user_detail=DB::table('users')->where('id',$id)->first();
-            $state=DB::table('master_state')->where('state_country_id',$user_detail->country_id)->get();
-            $city=DB::table('master_city')->where('city_state_id',$user_detail->state_id)->get();
+        $country = DB::table('master_country')->where('country_status', 1)->get();
+        $user_detail = $state = $city = "";
+        if ($id != null) {
+            $user_detail = DB::table('users')->where('id', $id)->first();
+            $state = DB::table('master_state')->where('state_country_id', $user_detail->country_id)->get();
+            $city = DB::table('master_city')->where('city_state_id', $user_detail->state_id)->get();
         }
-        if ($request->isMethod('post'))
-        {
-            if($request->user_id)
-            {
-                $useremail  = DB::table('users')->where('email', '=' , $request->email)->where('id', '!=' , $request->user_id)->where('is_deleted', '=' , 0)->first();
+        if ($request->isMethod('post')) {
+            if ($request->user_id) {
+                $useremail  = DB::table('users')->where('email', '=', $request->email)->where('id', '!=', $request->user_id)->where('is_deleted', '=', 0)->first();
 
-                if(!empty($useremail))
-                {
+                if (!empty($useremail)) {
                     return redirect()->back()->with(["error" => "The email has already been taken."])->withInput();
                 }
-            }
-            else
-            {
-                $useremail  = DB::table('users')->where('email', '=' , $request->email)->where('is_deleted', '=' , 0)->first();
+            } else {
+                $useremail  = DB::table('users')->where('email', '=', $request->email)->where('is_deleted', '=', 0)->first();
 
-                if(!empty($useremail))
-                {
+                if (!empty($useremail)) {
                     return redirect()->back()->with(["email" => "The email has already been taken."])->withInput();
                 }
             }
 
             $user = User::find($request->user_id);
-            $message="User profile updated successfully.";
-            if (!$user) 
-            {
-                $user = new User(); 
-                $message="User profile added successfully.";
+            $message = "User profile updated successfully.";
+            if (!$user) {
+                $user = new User();
+                $message = "User profile added successfully.";
             }
-                        
+
             if ($request->hasFile('profile_image')) {
                 $image = $request->file('profile_image');
                 $imageName = "pro" . time() . '.' . $image->getClientOriginalExtension();
@@ -170,11 +160,10 @@ class UserManagementController extends Controller
             $user->first_name       = $request->first_name;
             $user->last_name        = $request->last_name;
             $user->email            = $request->email;
-            if($request->password!='')
-            {
+            if ($request->password != '') {
                 $user->password         = Hash::make($request->password);
             }
-            
+
             $user->gender           = $request->gender;
             $user->country_id       = $request->country_id;
             $user->state_id         = $request->state_id;
@@ -190,96 +179,87 @@ class UserManagementController extends Controller
             $user->save();
             return redirect()->route("admin.userList")->with("success", $message);
         }
-        
-        return view('admin.add_user',compact('country','user_detail','state','city'));
+
+        return view('admin.add_user', compact('country', 'user_detail', 'state', 'city'));
     }
     public function viewUser($id)
     {
-        if($id!=null)
-        {
-            $user_detail=DB::table('users')
-                            ->leftjoin('master_country as mc','users.country_id','=','mc.country_id')        
-                            ->leftjoin('master_state as ms','users.state_id','=','ms.state_id')        
-                            ->leftjoin('master_city as c','users.city_id','=','c.city_id')
-                            ->select('users.*','mc.country_name','ms.state_name','c.city_name')        
-                            ->where('id',$id)->first();
+        if ($id != null) {
+            $user_detail = DB::table('users')
+                ->leftjoin('master_country as mc', 'users.country_id', '=', 'mc.country_id')
+                ->leftjoin('master_state as ms', 'users.state_id', '=', 'ms.state_id')
+                ->leftjoin('master_city as c', 'users.city_id', '=', 'c.city_id')
+                ->select('users.*', 'mc.country_name', 'ms.state_name', 'c.city_name')
+                ->where('id', $id)->first();
         }
-        return view('admin.view_user_profile',compact('user_detail'));
+        return view('admin.view_user_profile', compact('user_detail'));
     }
 
     public function sellerList()
     {
         //This function is for list the coach
-        $users=DB::table('users')
-                    ->leftjoin('master_country','master_country.country_id','=','users.country_id')
-                    ->where('user_type',2)
-                    ->where('is_deleted',0)
-                    ->select('users.*','master_country.country_name')
-                    ->orderBy('id', 'DESC')
-                    ->paginate(20);
-                    
-        return view('admin.seller_list',compact('users'));
-    }
-    public function sellerProfile(Request $request,$id=null)
-    {
-        $country=DB::table('master_country')->where('country_status',1)->get();
-        $services=DB::table('services')->get();
+        $users = DB::table('users')
+            ->leftjoin('master_country', 'master_country.country_id', '=', 'users.country_id')
+            ->leftjoin('master_city', 'master_city.city_id', '=', 'users.city_id')
+            ->leftjoin('shop_detail', 'shop_detail.user_id', '=', 'users.id')
+            ->where('user_type', 2)
+            ->where('is_deleted', 0)
+            ->select('users.*', 'master_country.country_name','shop_detail.shop_name','master_city.city_name')
+            //->orderBy('id', 'DESC')
+            ->paginate(20);
 
-        $user_detail= $state=$city=$shop_detail="";
-        $seller_service_ids=array();
-        if($id!=null)
-        {
-            $user_detail=DB::table('users')->where('id',$id)->first();
+        return view('admin.seller_list', compact('users'));
+    }
+    public function sellerProfile(Request $request, $id = null)
+    {
+        $country = DB::table('master_country')->where('country_status', 1)->get();
+        $services = DB::table('services')->get();
+
+        $user_detail = $state = $city = $shop_detail = "";
+        $seller_service_ids = array();
+        if ($id != null) {
+            $user_detail = DB::table('users')->where('id', $id)->first();
             //$state=DB::table('master_state')->where('state_country_id',$user_detail->country_id)->get();
-            $city=DB::table('master_city')->where('country_id',$user_detail->country_id)->get();
+            $city = DB::table('master_city')->where('country_id', $user_detail->country_id)->get();
             $seller_service_ids = DB::table('seller_service')
-                                        ->where('seller_id', $id)
-                                        ->pluck('service_id') // get only service IDs
-                                        ->toArray();
-            if($user_detail->user_type==2)
-            {
-                $shop_detail=DB::table('shop_detail')->where('user_id',$user_detail->id)->first();
+                ->where('seller_id', $id)
+                ->pluck('service_id') // get only service IDs
+                ->toArray();
+            if ($user_detail->user_type == 2) {
+                $shop_detail = DB::table('shop_detail')->where('user_id', $user_detail->id)->first();
             }
         }
-        
-        return view('admin.seller_profile',compact('country','user_detail','state','city','shop_detail','services','seller_service_ids'));
-    }
-    public function addSeller(Request $request,$id=null)
-    {
-        
-        if ($request->isMethod('post'))
-        {
-            if($request->email!='')
-            {
-                if($request->user_id)
-                {
-                    $useremail  = DB::table('users')->where('email', '=' , $request->email)->where('id', '!=' , $request->user_id)->where('is_deleted', '=' , 0)->first();
 
-                    if(!empty($useremail))
-                    {
+        return view('admin.seller_profile', compact('country', 'user_detail', 'state', 'city', 'shop_detail', 'services', 'seller_service_ids'));
+    }
+    public function addSeller(Request $request, $id = null)
+    {
+
+        if ($request->isMethod('post')) {
+            if ($request->email != '') {
+                if ($request->user_id) {
+                    $useremail  = DB::table('users')->where('email', '=', $request->email)->where('id', '!=', $request->user_id)->where('is_deleted', '=', 0)->first();
+
+                    if (!empty($useremail)) {
                         return redirect()->back()->with(["error" => "The email has already been taken."])->withInput();
                     }
-                }
-                else
-                {
-                    $useremail  = DB::table('users')->where('email', '=' , $request->email)->where('is_deleted', '=' , 0)->first();
+                } else {
+                    $useremail  = DB::table('users')->where('email', '=', $request->email)->where('is_deleted', '=', 0)->first();
 
-                    if(!empty($useremail))
-                    {
+                    if (!empty($useremail)) {
                         return redirect()->back()->with(["email" => "The email has already been taken."])->withInput();
                     }
                 }
             }
 
             $user = User::find($request->user_id);
-            $message="Seller profile updated successfully.";
-            if (!$user) 
-            {
-                $user = new User(); 
-                $message="Seller profile added successfully.";
-                $user->user_status=1;
+            $message = "Seller profile updated successfully.";
+            if (!$user) {
+                $user = new User();
+                $message = "Seller profile added successfully.";
+                $user->user_status = 1;
             }
-                        
+
             if ($request->hasFile('profile_image')) {
                 $image = $request->file('profile_image');
                 $imageName = "pro" . time() . '.' . $image->getClientOriginalExtension();
@@ -291,18 +271,19 @@ class UserManagementController extends Controller
             $user->last_name        = $request->last_name;
             $user->email            = $request->email;
             $user->user_name        = $request->user_name;
-           
-            if($request->password!='')
-            {
+
+            if ($request->password != '') {
                 $user->password         = Hash::make($request->password);
             }
-           
+
             $user->gender           = $request->gender;
             $user->country_id       = $request->country_id;
-           // $user->state_id         = $request->state_id;
+            // $user->state_id         = $request->state_id;
             $user->city_id          = $request->city_id;
             $user->address1         = $request->address1;
             $user->address2         = $request->address2;
+            $user->address1_ar      = $request->address1_ar;
+            $user->address2_ar      = $request->address2_ar;
             $user->zip_code         = $request->zip_code;
             $user->latitude         = $request->latitude;
             $user->longitude        = $request->longitude;
@@ -315,30 +296,39 @@ class UserManagementController extends Controller
             $user->email_verified   = 1;
             $user->created_at       = date('Y-m-d H:i:s');
             $user->save();
-            $user_id=$user->id;
+            $user_id = $user->id;
 
             //$shop = ShopDetail::find($request->user_id);
             $shop = ShopDetail::where('user_id', $request->user_id)->first();
             $isNew = false;
-            if (!$shop) 
-            {
-                $shop = new ShopDetail(); 
+            if (!$shop) {
+                $shop = new ShopDetail();
                 $isNew = true;
             }
-            $shop->user_id=$user_id;
-            $shop->shop_name=$request->shop_name;
-            $shop->about_shop=$request->about_shop;
+            $shop->user_id = $user_id;
+            $shop->shop_name = $request->shop_name;
+            $shop->shop_name_ar = $request->shop_name_ar;
+
+
+
+            $shop->about_shop = $request->about_shop;
+            $shop->about_shop_ar = $request->about_shop_ar;
+            $shop->about_shop_fr = $request->about_shop_fr;
+            $shop->about_shop_ru = $request->about_shop_ru;
+            $shop->about_shop_fa = $request->about_shop_fa;
+            $shop->about_shop_ur = $request->about_shop_ur;
+
 
             if ($request->hasFile('shop_logo')) {
                 $image = $request->file('shop_logo');
-                $imageName = random_int(1000, 9999). time() . '.' . $image->getClientOriginalExtension();
+                $imageName = random_int(1000, 9999) . time() . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('/uploads/shop_image'), $imageName);
                 $shop->shop_logo = $imageName;
             }
 
             if ($request->hasFile('shop_banner')) {
                 $image = $request->file('shop_banner');
-                $imageName = random_int(1000, 9999). time() . '.' . $image->getClientOriginalExtension();
+                $imageName = random_int(1000, 9999) . time() . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('/uploads/shop_image'), $imageName);
                 $shop->shop_banner = $imageName;
             }
@@ -349,60 +339,60 @@ class UserManagementController extends Controller
             // }
 
             $submittedServices = $request->input('service_id', []);
-            if($submittedServices)
-            {
+            if ($submittedServices) {
                 DB::table('seller_service')
-                        ->where('seller_id', $user_id)
-                        ->whereNotIn('service_id', $submittedServices)
-                        ->delete();
+                    ->where('seller_id', $user_id)
+                    ->whereNotIn('service_id', $submittedServices)
+                    ->delete();
 
                 foreach ($submittedServices as $service_id) {
                     DB::table('seller_service')->updateOrInsert(
                         ['seller_id' => $user_id, 'service_id' => $service_id],
                         ['created_at' => now()] // optional if you have timestamps
                     );
-                }   
-            }   
+                }
+            }
 
-            $this->generateQrCode($user_id,$request->shop_name);
+            $this->generateQrCode($user_id, $request->shop_name);
             //Now generate the new business card
             //$this->sellerDigitalCard($user_id);
 
             return redirect()->route("admin.sellerList")->with("success", $message);
         }
     }
-    
+
     public function sellerDigitalCard($id)
     {
-        $user  = DB::table('users')->where('id', '=' , $id)
-                        ->leftJoin('master_country', 'master_country.country_id', '=', 'users.country_id')
-                        //->leftJoin('master_state', 'master_state.state_id', '=', 'users.state_id')
-                        ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
-                        ->select(
-                                'users.*',
-                                'master_city.city_name','master_country.country_name'
-                            )
-                        ->first();
-        $shop  = DB::table('shop_detail')->where('user_id', '=' , $id)->first();
+        $user  = DB::table('users')->where('id', '=', $id)
+            ->leftJoin('master_country', 'master_country.country_id', '=', 'users.country_id')
+            //->leftJoin('master_state', 'master_state.state_id', '=', 'users.state_id')
+            ->leftJoin('master_city', 'master_city.city_id', '=', 'users.city_id')
+            ->select(
+                'users.*',
+                'master_city.city_name',
+                'master_country.country_name'
+            )
+            ->first();
+        $shop  = DB::table('shop_detail')->where('user_id', '=', $id)->first();
 
         $service = DB::table('seller_service')
-                        ->where('seller_id', $id)
-                        ->join('services','services.id','=','seller_service.service_id')->get();
+            ->where('seller_id', $id)
+            ->join('services', 'services.id', '=', 'seller_service.service_id')->get();
 
 
-        $qrFile = public_path('uploads/qr_code/' . $shop->qr_code); 
+        $qrFile = public_path('uploads/qr_code/' . $shop->qr_code);
         $qrBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($qrFile));
 
-        $shop_url = url('/').'/'.$user->city_name.'/'. strtolower(str_replace(' ', '', $shop->shop_name));
+        $shop_url = url('/') . '/' . $user->city_name . '/' . strtolower(str_replace(' ', '', $shop->shop_name));
 
         $html = view('admin.seller_card', [
             'shop' => $shop,
             'user'  => $user,
             'qrPath' => $qrBase64,
             'service' => $service,
-            'shop_url'=>$shop_url
+            'shop_url' => $shop_url
         ])->render();
-        
+
         $fileName = 'card_' . $shop->id . '_' . $shop->shop_name . '.png';
         $destinationPath = public_path('uploads/business_card');
 
@@ -418,7 +408,7 @@ class UserManagementController extends Controller
         // $business->save();
 
         $shop = ShopDetail::where('user_id', $id)->first();
-        $shop->digital_card=$fileName;
+        $shop->digital_card = $fileName;
         $shop->save();
 
         // 7. Return success or download (optional)
@@ -429,58 +419,56 @@ class UserManagementController extends Controller
 
         //return view('admin.seller_card',compact('user','shop'));
     }
-    
+
     public function viewSeller($id)
     {
         //This function is for view the coach profile
-        if($id!=null)
-        {
-            $user_detail=DB::table('users')
-                            ->leftjoin('master_country as mc','users.country_id','=','mc.country_id')        
-                            //->leftjoin('master_state as ms','users.state_id','=','ms.state_id')        
-                            ->leftjoin('master_city as c','users.city_id','=','c.city_id')
-                            ->select('users.*','mc.country_name','c.city_name')        
-                            ->where('id',$id)->first();
-            if($user_detail->user_type==2)
-            {
-                $shop_detail=DB::table('shop_detail')->where('user_id',$user_detail->id)->first();
-                $services=DB::table('seller_service')
-                                ->leftjoin('services','seller_service.service_id','=','services.id')     
-                                ->where('seller_service.seller_id',$id)->get();   
-            }               
+        if ($id != null) {
+            $user_detail = DB::table('users')
+                ->leftjoin('master_country as mc', 'users.country_id', '=', 'mc.country_id')
+                //->leftjoin('master_state as ms','users.state_id','=','ms.state_id')
+                ->leftjoin('master_city as c', 'users.city_id', '=', 'c.city_id')
+                ->select('users.*', 'mc.country_name', 'c.city_name')
+                ->where('id', $id)->first();
+            if ($user_detail->user_type == 2) {
+                $shop_detail = DB::table('shop_detail')->where('user_id', $user_detail->id)->first();
+                $services = DB::table('seller_service')
+                    ->leftjoin('services', 'seller_service.service_id', '=', 'services.id')
+                    ->where('seller_service.seller_id', $id)->get();
+            }
         }
-        return view('admin.view_seller_profile',compact('user_detail','shop_detail','services'));
+        return view('admin.view_seller_profile', compact('user_detail', 'shop_detail', 'services'));
     }
     public function viewSellerEnquiry($id)
     {
-        $seller_id=$id;
+        $seller_id = $id;
         $sellreques = DB::table('seller_request')
-                        ->join('users','users.id','=','seller_request.seller_id')
-                        ->where('seller_request.seller_id',$seller_id)
-                        ->select('seller_request.*','users.user_name','users.first_name','users.last_name')
-                        ->orderBy('seller_request.id', 'DESC')
-                        ->get();
+            ->join('users', 'users.id', '=', 'seller_request.seller_id')
+            ->where('seller_request.seller_id', $seller_id)
+            ->select('seller_request.*', 'users.user_name', 'users.first_name', 'users.last_name')
+            ->orderBy('seller_request.id', 'DESC')
+            ->get();
 
-        return view('admin.view_seller_enquiry',compact('seller_id','sellreques'));
+        return view('admin.view_seller_enquiry', compact('seller_id', 'sellreques'));
     }
     public function viewSellerProduct($id)
     {
-        $brand=DB::table('brand')->where('is_active',1)->where('is_deleted',0)->get();
-        $category=DB::table('category')->where('is_active',1)->where('is_deleted',0)->get();
-        $seller_id=$id;
-        return view('admin.view_seller_product',compact('brand','category','seller_id'));
+        $brand = DB::table('brand')->where('is_active', 1)->where('is_deleted', 0)->get();
+        $category = DB::table('category')->where('is_active', 1)->where('is_deleted', 0)->get();
+        $seller_id = $id;
+        return view('admin.view_seller_product', compact('brand', 'category', 'seller_id'));
     }
     public function getSellerProduct(Request $request)
     {
-        $query = DB::table('product')->where('seller_id',$request->seller_id)
-                        ->leftJoin('brand', 'brand.id', '=', 'product.brand_id')
-                        ->leftJoin('make_model', 'make_model.id', '=', 'product.model_id')
-                        ->leftJoin('category', 'category.id', '=', 'product.category_id')
-                        ->leftJoin('subcategory', 'subcategory.id', '=', 'product.subcategory_id')
-                        ->leftJoin('generation_year', 'generation_year.id', '=', 'product.generation_id')
-                        ->leftJoin('part_type', 'part_type.id', '=', 'product.part_type_id')
-                        ->leftJoin('product_img', 'product_img.product_id', '=', 'product.id')
-                        ->where('product.is_deleted', 0);
+        $query = DB::table('product')->where('seller_id', $request->seller_id)
+            ->leftJoin('brand', 'brand.id', '=', 'product.brand_id')
+            ->leftJoin('make_model', 'make_model.id', '=', 'product.model_id')
+            ->leftJoin('category', 'category.id', '=', 'product.category_id')
+            ->leftJoin('subcategory', 'subcategory.id', '=', 'product.subcategory_id')
+            ->leftJoin('generation_year', 'generation_year.id', '=', 'product.generation_id')
+            ->leftJoin('part_type', 'part_type.id', '=', 'product.part_type_id')
+            ->leftJoin('product_img', 'product_img.product_id', '=', 'product.id')
+            ->where('product.is_deleted', 0);
         // Filters
         if ($request->brand_id) {
             $query->where('product.brand_id', $request->brand_id);
@@ -495,45 +483,52 @@ class UserManagementController extends Controller
             $query->where('product.subcategory_id', $request->subcategory_id);
         }
         $query->distinct('product.id');
-        
+
         // Important: select necessary columns only, avoid ambiguous column names
         $query->select(
-                    'product.id',
-                    'brand.brand_name as brand_name',
-                    'make_model.model_name as model_name',
-                    'category.category_name as category_name',
-                    'subcategory.subcat_name as subcategory_name',
-                    'product.product_price','product.quantity','product.is_active','product.product_type','product_img.product_image',
-                    'generation_year.start_year','generation_year.end_year','part_type.part_type_label','product.product_description'
-                );
+            'product.id',
+            'brand.brand_name as brand_name',
+            'make_model.model_name as model_name',
+            'category.category_name as category_name',
+            'subcategory.subcat_name as subcategory_name',
+            'product.product_price',
+            'product.quantity',
+            'product.is_active',
+            'product.product_type',
+            'product_img.product_image',
+            'generation_year.start_year',
+            'generation_year.end_year',
+            'part_type.part_type_label',
+            'product.product_description'
+        );
         if ($request->has('prevent')) {
             return DataTables::of(collect([]))->make(true);
         }
 
-       return DataTables::of($query)
-                            ->addIndexColumn() // This auto-creates DT_RowIndex for serial number
-                            ->addColumn('checkbox', function ($row) {
-                                return '<input type="checkbox" name="ids[]" value="' . $row->id . '" class="selectBox">';
-                            })
-                            ->addColumn('brand', fn($row) => $row->brand_name ?? '')
-                            ->addColumn('model', fn($row) => $row->model_name ?? '')
-                            ->addColumn('category', fn($row) => $row->category_name ?? '')
-                            ->addColumn('subcategory', fn($row) => $row->subcategory_name ?? '')
-                            ->addColumn('generation', fn($row) => $row->start_year.' - '.$row->end_year)
-                            ->addColumn('variant', fn($row) => $row->part_type_label)
-                            ->addColumn('price', fn($row) => $row->product_price)
-                            ->filter(function ($query) use ($request) {
-                                if ($search = $request->get('search')['value']) {
-                                    $query->where(function ($q) use ($search) {
-                                        $q->where('brand.brand_name', 'like', "%{$search}%")
-                                        ->orWhere('make_model.model_name', 'like', "%{$search}%")
-                                        ->orWhere('category.category_name', 'like', "%{$search}%")
-                                        ->orWhere('subcategory.subcat_name', 'like', "%{$search}%");
-                                    });
-                                }
-                            })
-                            ->rawColumns(['checkbox', 'status', 'action']) // Include all columns with HTML
-                            ->make(true);
+        return DataTables::of($query)
+            ->addIndexColumn() // This auto-creates DT_RowIndex for serial number
+            ->addColumn('checkbox', function ($row) {
+                return '<input type="checkbox" name="ids[]" value="' . $row->id . '" class="selectBox">';
+            })
+            ->addColumn('brand', fn($row) => $row->brand_name ?? '')
+            ->addColumn('model', fn($row) => $row->model_name ?? '')
+            ->addColumn('category', fn($row) => $row->category_name ?? '')
+            ->addColumn('subcategory', fn($row) => $row->subcategory_name ?? '')
+            ->addColumn('generation', fn($row) => $row->start_year . ' - ' . $row->end_year)
+            ->addColumn('variant', fn($row) => $row->part_type_label)
+            ->addColumn('price', fn($row) => $row->product_price)
+            ->filter(function ($query) use ($request) {
+                if ($search = $request->get('search')['value']) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('brand.brand_name', 'like', "%{$search}%")
+                            ->orWhere('make_model.model_name', 'like', "%{$search}%")
+                            ->orWhere('category.category_name', 'like', "%{$search}%")
+                            ->orWhere('subcategory.subcat_name', 'like', "%{$search}%");
+                    });
+                }
+            })
+            ->rawColumns(['checkbox', 'status', 'action']) // Include all columns with HTML
+            ->make(true);
     }
     public function bulkDeleteusr(Request $request)
     {
@@ -562,11 +557,11 @@ class UserManagementController extends Controller
     public function allRequest()
     {
         $sellreques = DB::table('seller_request')
-                        ->join('users','users.id','=','seller_request.seller_id')
-                        ->select('seller_request.*','users.user_name','users.first_name','users.last_name')
-                        ->orderBy('seller_request.id', 'DESC')
-                        ->get();
-        return view('admin.seller_request_list',compact('sellreques'));
+            ->join('users', 'users.id', '=', 'seller_request.seller_id')
+            ->select('seller_request.*', 'users.user_name', 'users.first_name', 'users.last_name')
+            ->orderBy('seller_request.id', 'DESC')
+            ->get();
+        return view('admin.seller_request_list', compact('sellreques'));
     }
     public function updateRequestStatus(Request $request)
     {

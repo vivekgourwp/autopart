@@ -391,6 +391,8 @@ class HomeController extends Controller
                 'generation_year.start_year',
                 'generation_year.end_year',
                 'users.mobile',
+                'users.latitude as user_lat',
+                'users.longitude as user_long',
                 'part_type.part_type_label',
                 'product.admin_product_id'
             );
@@ -625,6 +627,7 @@ class HomeController extends Controller
             $subcategoryCol = $locale . '_subcat_name';
 
             $product = DB::table('product as p')
+                ->join('users', 'users.id', '=', 'p.seller_id')
                 ->leftJoin('brand as b', 'b.id', '=', 'p.brand_id')
                 ->leftJoin('make_model as m', 'm.id', '=', 'p.model_id')
                 ->leftJoin('category as c', 'c.id', '=', 'p.category_id')
@@ -651,13 +654,16 @@ class HomeController extends Controller
                     'pm.product_image',
                     'gy.start_year',
                     'gy.end_year',
-                    'py.part_type_label'
+                    'py.part_type_label',
+                    'users.latitude as user_lat',
+                    'users.longitude as user_long',
                 )
                 ->where('p.id', $id)
                 ->first();
         } else {
             // default english
             $product = DB::table('product as p')
+                ->join('users', 'users.id', '=', 'p.seller_id')
                 ->leftJoin('brand as b', 'b.id', '=', 'p.brand_id')
                 ->leftJoin('make_model as m', 'm.id', '=', 'p.model_id')
                 ->leftJoin('category as c', 'c.id', '=', 'p.category_id')
@@ -684,7 +690,9 @@ class HomeController extends Controller
                     'pm.product_image',
                     'gy.start_year',
                     'gy.end_year',
-                    'py.part_type_label'
+                    'py.part_type_label',
+                    'users.latitude as user_lat',
+                    'users.longitude as user_long'
                 )
                 ->where('p.id', $id)
                 ->first();
@@ -992,7 +1000,10 @@ class HomeController extends Controller
             ->select(
                 'users.*',
                 'master_city.city_name',
-                'master_country.country_name'
+                'master_country.country_name',
+                'users.latitude as user_lat',
+        'users.longitude as user_long'
+
             )
             ->first();
         $shop  = DB::table('shop_detail')->where('user_id', '=', $id)->first();
@@ -1157,6 +1168,7 @@ class HomeController extends Controller
         $shop  = DB::table('shop_detail')->where('user_id', '=', $id)->first();
 
         $query = Product::query()
+            ->join('users', 'users.id', '=', 'product.seller_id')
             ->leftJoin('brand', 'brand.id', '=', 'product.brand_id')
             ->leftJoin('make_model', 'make_model.id', '=', 'product.model_id')
             ->leftJoin('category', 'category.id', '=', 'product.category_id')
@@ -1206,7 +1218,9 @@ class HomeController extends Controller
                 'product.seller_id',
                 'product.admin_product_id',
                 'generation_year.start_year',
-                'generation_year.end_year'
+                'generation_year.end_year',
+                'users.latitude as user_lat',
+                'users.longitude as user_long'
             );
         } else {
             // Fallback to English/default
@@ -1225,7 +1239,9 @@ class HomeController extends Controller
                 'product.seller_id',
                 'product.admin_product_id',
                 'generation_year.start_year',
-                'generation_year.end_year'
+                'generation_year.end_year',
+                'users.latitude as user_lat',
+                'users.longitude as user_long'
             );
         }
 
